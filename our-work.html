@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="See Shed Photobooth's work — custom-built installations at Edinburgh Festival Fringe, Christmas markets, Murrayfield, weddings and more across Scotland.">
+  <title>Our Work — Shed Photobooth</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .testimonial-card {
+      background: var(--midnight2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 1rem; left: 1.5rem;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--amber);
+      opacity: 0.3;
+      font-family: Georgia, serif;
+    }
+    .testimonial-quote {
+      font-size: 0.97rem;
+      font-weight: 300;
+      color: var(--offwhite);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      padding-top: 1.5rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .testimonial-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-mid);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--amber);
+      flex-shrink: 0;
+    }
+    .testimonial-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--offwhite);
+    }
+    .testimonial-role {
+      font-size: 0.75rem;
+      color: var(--steel);
+      font-weight: 300;
+    }
+    .logo-placeholder {
+      background: var(--midnight2);
+      border: 1px dashed rgba(255,184,0,0.2);
+      border-radius: var(--radius);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(160,160,160,0.35);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="images/logo-white.png" alt="Shed Photobooth"
+             onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='flex'">
+        <div class="nav__logo-text" id="nav-fallback"><span>Shed</span>Photobooth</div>
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="our-work.html" class="active">Our Work</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="contact.html" class="btn btn-primary nav__cta">Get a Quote</a>
+      <button class="nav__burger" aria-label="Menu" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="our-work.html">Our Work</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn btn-primary" style="align-self:flex-start;margin-top:1rem;">Get a Quote</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero__content">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Our Work</span>
+      </div>
+      <span class="eyebrow">Recent Activations</span>
+      <h1 class="section-title" style="font-size:clamp(2.5rem,6vw,4.5rem);">
+        Unforgettable<br><span>Memories.</span>
+      </h1>
+      <p class="section-sub" style="margin-top:1rem;">
+        From high-footfall festivals to large-scale seasonal attractions, Shed Photobooth has delivered custom-built experiences across Scotland's most recognised events.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item reveal">
+    <div class="stat-num">10+</div>
+    <div class="stat-label">Years in Industry</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <div class="stat-num">10,000+</div>
+    <div class="stat-label">Guests Captured</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <div class="stat-num">Scot.</div>
+    <div class="stat-label">Home Base</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <div class="stat-num">UK</div>
+    <div class="stat-label">Wide Coverage</div>
+  </div>
+</div>
+
+<!-- APPROACH -->
+<section class="section section--mid">
+  <div class="container">
+    <div class="mission-layout">
+      <div class="reveal">
+        <span class="eyebrow">Our Experience</span>
+        <h2 class="section-title">Built for<br><span>High-Pressure</span><br>Events.</h2>
+        <p class="section-sub">With over 10 years of experience in the industry, we've worked with a wide range of clients and honed our skills across every type of event imaginable.</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="mission-body">
+          <p>We specialise in designing, building, and operating immersive booths that match each event's aesthetic, while performing flawlessly under pressure.</p>
+          <p>We believe every client is unique. We take the time to understand your needs and preferences, creating a comfortable and relaxed environment that captures natural, candid moments.</p>
+          <p>Whether you're expecting 200 guests or 20,000, we've got it covered.</p>
+        </div>
+        <div class="mission-values" style="margin-top:1.5rem;">
+          <div class="value-item">
+            <div class="value-label">Aesthetic Match</div>
+            <div class="value-text">Every build designed for your event's look.</div>
+          </div>
+          <div class="value-item">
+            <div class="value-label">High Throughput</div>
+            <div class="value-text">Built for busy peak hours and large crowds.</div>
+          </div>
+          <div class="value-item">
+            <div class="value-label">Weather-Ready</div>
+            <div class="value-text">Outdoor setups built for Scottish weather.</div>
+          </div>
+          <div class="value-item">
+            <div class="value-label">Brand Output</div>
+            <div class="value-text">Every print reflects your event identity.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT CARDS — real projects only, no placeholders -->
+<section class="section section--dark">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <span class="eyebrow">Project Portfolio</span>
+      <h2 class="section-title">Where We've<br><span>Popped Up.</span></h2>
+    </div>
+    <div class="work-grid">
+
+      <div class="work-card reveal">
+        <div class="work-card__image">
+          <img src="images/project-fringe.jpg" alt="Edinburgh Festival Fringe photobooth" style="width:100%;height:100%;object-fit:cover;">
+          <div class="work-card__tag">Edinburgh Festival Fringe</div>
+        </div>
+        <div class="work-card__body">
+          <h3 class="work-card__title">Edinburgh Festival Fringe</h3>
+          <p class="work-card__desc">A standout installation that attracted queues throughout the event, generating memorable content and delivering a high-throughput photo experience for festival-goers.</p>
+          <ul class="work-card__list">
+            <li>Custom-built shed photobooth structure</li>
+            <li>Festival-ready exterior design</li>
+            <li>Themed graphics and signage</li>
+            <li>High-throughput setup for peak hours</li>
+            <li>On-site operational support throughout</li>
+            <li>Branded photo outputs for all guests</li>
+          </ul>
+          <a href="contact.html" class="btn btn-outline" style="font-size:0.78rem;padding:0.7rem 1.5rem;">Book Something Similar</a>
+        </div>
+      </div>
+
+      <div class="work-card reveal reveal-delay-1">
+        <div class="work-card__image">
+          <img src="images/project-christmas.jpg" alt="Edinburgh Christmas Market photobooth" style="width:100%;height:100%;object-fit:cover;">
+          <div class="work-card__tag">Christmas Market</div>
+        </div>
+        <div class="work-card__body">
+          <h3 class="work-card__title">Edinburgh's Christmas Market</h3>
+          <p class="work-card__desc">A visually cohesive installation that blended into the Christmas Market atmosphere while delivering high-quality photo experiences for visitors throughout the festive season.</p>
+          <ul class="work-card__list">
+            <li>Seasonal exterior design and colour palette</li>
+            <li>Festive graphic overlays and branding</li>
+            <li>Weather-conscious outdoor setup</li>
+            <li>High reliability during peak seasonal footfall</li>
+            <li>On-site management and operational support</li>
+          </ul>
+          <a href="contact.html" class="btn btn-outline" style="font-size:0.78rem;padding:0.7rem 1.5rem;">Book Something Similar</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SCROLLING PHOTO MARQUEE -->
+<div class="photo-marquee-wrap">
+  <div class="photo-marquee-track">
+    <img src="images/strip-1.png" alt="Shed Photobooth event photos">
+    <img src="images/strip-2.png" alt="Shed Photobooth event photos">
+    <img src="images/strip-3.png" alt="Shed Photobooth event photos">
+    <img src="images/strip-4.jpg" alt="Shed Photobooth event photos">
+    <img src="images/strip-5.png" alt="Shed Photobooth event photos">
+    <img src="images/gallery-1.jpg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-2.jpg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-3.jpg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-4.jpeg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-5.jpg" alt="Shed Photobooth event photos">
+    <!-- Duplicate for seamless loop -->
+    <img src="images/strip-1.png" alt="Shed Photobooth event photos">
+    <img src="images/strip-2.png" alt="Shed Photobooth event photos">
+    <img src="images/strip-3.png" alt="Shed Photobooth event photos">
+    <img src="images/strip-4.jpg" alt="Shed Photobooth event photos">
+    <img src="images/strip-5.png" alt="Shed Photobooth event photos">
+    <img src="images/gallery-1.jpg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-2.jpg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-3.jpg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-4.jpeg" alt="Shed Photobooth event photos">
+    <img src="images/gallery-5.jpg" alt="Shed Photobooth event photos">
+  </div>
+</div>
+
+<!-- ═══ NOTE 2: GRAPHICS DESIGNER SECTION ═══ -->
+<section class="section section--mid">
+  <div class="container">
+    <div class="mission-layout">
+
+      <div class="reveal">
+        <span class="eyebrow">In-House Design</span>
+        <h2 class="section-title">Graphics That<br><span>Wow.</span></h2>
+        <p style="font-size:1rem;font-weight:300;color:var(--steel);line-height:1.8;margin-bottom:1.5rem;">
+          Our in-house graphic designer has spent years creating brands and visual identities for high-end West End theatres. When they design your welcome screen and print layout, it shows.
+        </p>
+        <p style="font-size:1rem;font-weight:300;color:var(--steel);line-height:1.8;margin-bottom:2rem;">
+          This isn't a template with your logo dropped in. Every welcome screen and print layout is designed from scratch to match your event, your brand, and your audience. Made to make an impression.
+        </p>
+        <a href="contact.html" class="btn btn-primary">Talk to Us About Design</a>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);">
+
+          <div style="background:var(--midnight2);padding:2rem 1.75rem;">
+            <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:0.75rem;">Welcome Screen</div>
+            <div style="font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem;">Custom Digital Display</div>
+            <p style="font-size:0.85rem;font-weight:300;color:var(--steel);line-height:1.65;">The first thing your guests see. Branded, animated, and designed to match your event identity perfectly.</p>
+          </div>
+
+          <div style="background:var(--midnight2);padding:2rem 1.75rem;">
+            <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:0.75rem;">Print Layout</div>
+            <div style="font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem;">Branded Photo Strips</div>
+            <p style="font-size:0.85rem;font-weight:300;color:var(--steel);line-height:1.65;">The print your guests take home. Designed to carry your brand long after the event is over.</p>
+          </div>
+
+          <div style="background:var(--midnight2);padding:2rem 1.75rem;">
+            <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:0.75rem;">West End Pedigree</div>
+            <div style="font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem;">Theatre-Grade Quality</div>
+            <p style="font-size:0.85rem;font-weight:300;color:var(--steel);line-height:1.65;">Our designer's background in high-end West End theatre means they understand how to create graphics that command attention.</p>
+          </div>
+
+          <div style="background:var(--midnight2);padding:2rem 1.75rem;">
+            <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:0.75rem;">Fully Bespoke</div>
+            <div style="font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.6rem;">Zero Templates</div>
+            <p style="font-size:0.85rem;font-weight:300;color:var(--steel);line-height:1.65;">No stock layouts, no generic overlays. Everything is created specifically for you and your event.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOTE 9: CLIENTS & TESTIMONIALS ═══ -->
+<section class="section section--dark">
+  <div class="container">
+
+    <!-- Client logos -->
+    <div class="reveal" style="margin-bottom:3rem;">
+      <span class="eyebrow">Our Clients</span>
+      <h2 class="section-title">Trusted By<br><span>Great Events.</span></h2>
+      <p class="section-sub" style="margin-top:0.75rem;">We've had the pleasure of working with some fantastic events, venues and organisations across Scotland and beyond.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:5rem;" class="reveal">
+      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+        <img src="images/client-1.png" alt="Assembly Festival" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      </div>
+      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+        <img src="images/client-2.png" alt="Edinburgh's Christmas" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      </div>
+      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+        <img src="images/client-3.jpg" alt="Edinburgh's Winter Festival" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      </div>
+      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+        <img src="images/client-4.png" alt="Edinburgh's Hogmanay" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="reveal" style="margin-bottom:2.5rem;">
+      <span class="eyebrow">What They Say</span>
+      <h2 class="section-title" style="font-size:2rem;">Kind<br><span>Words.</span></h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;" class="reveal reveal-delay-1">
+
+      <!--
+        TESTIMONIALS — Replace placeholder text with real quotes when you have them.
+        Update: quote text, initials in avatar, name, and role/event.
+      -->
+
+      <div class="testimonial-card">
+        <p class="testimonial-quote">
+          Add your first client testimonial here. A sentence or two about their experience works perfectly. Something genuine and specific always lands best.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AB</div>
+          <div>
+            <div class="testimonial-name">Client Name</div>
+            <div class="testimonial-role">Event / Organisation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <p class="testimonial-quote">
+          Add your second client testimonial here. Focus on what made the experience stand out, the quality of the build, or the reaction from their guests.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">CD</div>
+          <div>
+            <div class="testimonial-name">Client Name</div>
+            <div class="testimonial-role">Event / Organisation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <p class="testimonial-quote">
+          Add your third client testimonial here. Even a short, punchy quote works well. Authenticity matters more than length.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">EF</div>
+          <div>
+            <div class="testimonial-name">Client Name</div>
+            <div class="testimonial-role">Event / Organisation</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background:var(--amber);padding:4rem 0;">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;">
+      <div>
+        <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;text-transform:uppercase;color:var(--midnight);line-height:1.1;">
+          Planning a festival,<br>wedding, or activation?
+        </h2>
+        <p style="font-size:0.95rem;color:rgba(26,27,38,0.65);margin-top:0.75rem;">
+          Tell us your date and event type. We'll confirm availability and send a tailored quote.
+        </p>
+      </div>
+      <a href="contact.html" class="btn" style="background:var(--midnight);color:var(--amber);white-space:nowrap;">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <img src="images/logo-white.png" alt="Shed Photobooth" onerror="this.style.display='none'">
+        <p>Custom-built photobooths for festivals, weddings, Christmas markets, sports events and more. Based in Scotland, available UK-wide.</p>
+        <p style="font-size:0.78rem;color:rgba(160,160,160,0.5);">Trading name of Capture Collective Ltd<br>Registered in Scotland</p>
+        <div class="footer__social">
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="TikTok">♪</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Navigate</div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="our-work.html">Our Work</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Events</div>
+        <ul>
+          <li><a href="contact.html">Festivals</a></li>
+          <li><a href="contact.html">Weddings</a></li>
+          <li><a href="contact.html">Christmas Markets</a></li>
+          <li><a href="contact.html">Corporate</a></li>
+          <li><a href="contact.html">Sports Events</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Contact</div>
+        <ul>
+          <li><a href="mailto:capturecollectives@gmail.com">capturecollectives@gmail.com</a></li>
+          <li style="color:var(--steel);font-size:0.85rem;font-weight:300;">Based in Scotland<br>Available UK-Wide</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Shed Photo Booth — Capture Collective Ltd. All rights reserved.</span>
+      <div style="display:flex;gap:1.5rem;">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

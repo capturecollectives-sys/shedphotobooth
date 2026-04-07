@@ -1,0 +1,8 @@
+# Netlify configuration
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/home"
+  to = "/index.html"
+  status = 301
