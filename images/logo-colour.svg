@@ -1,0 +1,35 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800&amp;display=swap');
+      
+      .st-midnight { fill: none; stroke: #1A1B26; stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; }
+      .st-lens { fill: none; stroke: #1A1B26; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+      .text-shed { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 140px; fill: #1A1B26; }
+      .text-pb { font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 42px; fill: #FFB800; letter-spacing: 22px; }
+      .text-tag { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 20px; fill: #1A1B26; }
+    </style>
+  </defs>
+
+  <rect width="800" height="600" fill="none"/>
+
+  <g transform="translate(0, -20)">
+    <path class="st-midnight" d="M 260 210 L 400 110 L 540 210" />
+    
+    <path class="st-midnight" d="M 280 195 L 280 290 L 350 290" />
+    
+    <path class="st-midnight" d="M 520 195 L 520 290 L 440 290" />
+
+    <circle class="st-lens" cx="400" cy="230" r="45" />
+    
+    <circle class="st-lens" cx="400" cy="230" r="20" stroke-width="8" />
+    
+    <path class="st-lens" d="M 355 230 L 355 330 C 355 350, 390 350, 390 330" />
+  </g>
+
+  <text x="400" y="450" class="text-shed" text-anchor="middle">SHED</text>
+  
+  <text x="410" y="515" class="text-pb" text-anchor="middle">PHOTOBOOTH</text>
+  
+  <text x="400" y="565" class="text-tag" text-anchor="middle">Custom Installations for Immersive Events</text>
+</svg>
