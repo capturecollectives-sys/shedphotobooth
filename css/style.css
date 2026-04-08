@@ -143,13 +143,12 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   gap: 0;
-  overflow: hidden;
   text-decoration: none;
 }
 .nav__logo img {
-  height: 52px;
+  height: 72px;
   width: auto;
-  max-width: 200px;
+  max-width: 240px;
   object-fit: contain;
   display: block;
 }
@@ -162,7 +161,7 @@ ul { list-style: none; }
   display: block;
 }
 @media (max-width: 768px) {
-  .nav__logo img { height: 40px; max-width: 160px; }
+  .nav__logo img { height: 48px; max-width: 180px; }
 }
 .nav__logo-text {
   font-size: 0.75rem;
