@@ -1,7 +1,7 @@
 <svg viewBox="240 85 320 500" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800&amp;display=swap');
       .st { fill: none; stroke: #FFFFFF; stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; }
       .st-thin { fill: none; stroke: #FFFFFF; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
       .text-shed { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 140px; fill: #FFFFFF; }
@@ -9,24 +9,18 @@
       .text-tag { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 20px; fill: rgba(255,255,255,0.55); }
     </style>
   </defs>
-
-  <!-- Shed: roof peak then walls as one connected path, no stray vertical lines -->
   <!-- Roof -->
   <polyline class="st" points="255,210 400,105 545,210" />
-  <!-- Left wall down -->
+  <!-- Left wall -->
   <polyline class="st" points="275,198 275,295" />
-  <!-- Right wall down -->
+  <!-- Right wall -->
   <polyline class="st" points="525,198 525,295" />
-  <!-- Floor line (bottom horizontal only, no right wall extension showing) -->
-
-  <!-- Camera lens inside shed -->
+  <!-- Camera lens -->
   <circle class="st-thin" cx="400" cy="225" r="48" />
   <circle class="st-thin" cx="400" cy="225" r="22" />
-  <!-- Lens mount pole going down -->
+  <!-- Lens pole -->
   <line class="st-thin" x1="400" y1="273" x2="400" y2="340" />
-  <!-- Small base -->
   <line class="st-thin" x1="375" y1="340" x2="425" y2="340" />
-
   <!-- Text -->
   <text x="400" y="455" class="text-shed" text-anchor="middle">SHED</text>
   <text x="410" y="518" class="text-pb" text-anchor="middle">PHOTOBOOTH</text>
