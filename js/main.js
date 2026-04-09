@@ -74,3 +74,31 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 });
+
+// ── CONTACT FORM ─────────────────────────────────────────
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+  const submitBtn = document.getElementById('submit-btn');
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    const data = new FormData(contactForm);
+    try {
+      const res = await fetch('https://formspree.io/f/mpqoevpk', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        window.location.href = '/thank-you.html';
+      } else {
+        submitBtn.textContent = 'Something went wrong — please try again';
+        submitBtn.disabled = false;
+      }
+    } catch(err) {
+      submitBtn.textContent = 'Something went wrong — please try again';
+      submitBtn.disabled = false;
+    }
+  });
+}
