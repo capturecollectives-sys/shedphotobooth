@@ -176,14 +176,41 @@
               placeholder="Any details about the event aesthetic, brand, specific requirements, or questions you have..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="align-self:flex-start; font-size:0.85rem; padding:1rem 2.25rem;">
+          <button type="submit" class="btn btn-primary" id="submit-btn" style="align-self:flex-start; font-size:0.85rem; padding:1rem 2.25rem;">
             Send Enquiry →
           </button>
 
           <p style="font-size:0.75rem; color:var(--steel); margin-top:0.75rem; line-height:1.6;">
-            We'll get back to you within 24 hours. This site is protected by Netlify Forms.
+            We'll get back to you within 24 hours.
           </p>
         </form>
+
+        <script>
+          const form = document.querySelector('.contact-form');
+          const btn = document.getElementById('submit-btn');
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            const data = new FormData(form);
+            try {
+              const res = await fetch('https://formspree.io/f/mpqoevpk', {
+                method: 'POST',
+                body: data,
+                headers: { 'Accept': 'application/json' }
+              });
+              if (res.ok) {
+                window.location.href = '/thank-you.html';
+              } else {
+                btn.textContent = 'Something went wrong — please try again';
+                btn.disabled = false;
+              }
+            } catch(err) {
+              btn.textContent = 'Something went wrong — please try again';
+              btn.disabled = false;
+            }
+          });
+        </script>
       </div>
 
     </div>
