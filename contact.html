@@ -116,7 +116,7 @@
 
       <!-- FORM SIDE -->
       <div class="reveal reveal-delay-1">
-        <form class="contact-form" method="POST">
+        <form class="contact-form">
           <input type="hidden" name="_next" value="https://shedphotobooth.com/thank-you.html">
           <!-- fallback for workers.dev -->
           <input type="hidden" name="_subject" value="New enquiry — Shed Photobooth">
@@ -186,32 +186,6 @@
           </p>
         </form>
 
-        <script>
-          const form = document.querySelector('.contact-form');
-          const btn = document.getElementById('submit-btn');
-          form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            btn.textContent = 'Sending...';
-            btn.disabled = true;
-            const data = new FormData(form);
-            try {
-              const res = await fetch('https://formspree.io/f/mpqoevpk', {
-                method: 'POST',
-                body: data,
-                headers: { 'Accept': 'application/json' }
-              });
-              if (res.ok) {
-                window.location.href = '/thank-you.html';
-              } else {
-                btn.textContent = 'Something went wrong — please try again';
-                btn.disabled = false;
-              }
-            } catch(err) {
-              btn.textContent = 'Something went wrong — please try again';
-              btn.disabled = false;
-            }
-          });
-        </script>
       </div>
 
     </div>
