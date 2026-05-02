@@ -1,4 +1,5 @@
-<svg viewBox="240 85 320 500" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle">
+  <title id="logoTitle">Shed Photobooth</title>
   <defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800&amp;display=swap');

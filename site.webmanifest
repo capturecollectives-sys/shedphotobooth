@@ -1,0 +1,17 @@
+{
+  "name": "Shed Photobooth",
+  "short_name": "Shed",
+  "description": "Custom photobooth hire for festivals, weddings, markets, sports events and brand activations across Scotland and the UK.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1A1B26",
+  "theme_color": "#1A1B26",
+  "icons": [
+    {
+      "src": "/images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

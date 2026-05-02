@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Shed Photobooth</title>
+  <rect width="128" height="128" rx="18" fill="#1A1B26"/>
+  <path d="M31 55 64 31l33 24" fill="none" stroke="#F5F5F5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M37 53v32h21m33-32v32H70" fill="none" stroke="#F5F5F5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="59" r="14" fill="none" stroke="#FFB800" stroke-width="7"/>
+  <circle cx="64" cy="59" r="5" fill="#F5F5F5"/>
+  <path d="M64 73v28" stroke="#FFB800" stroke-width="7" stroke-linecap="round"/>
+</svg>

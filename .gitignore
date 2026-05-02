@@ -4,3 +4,7 @@
 !.dev.vars.example
 .env*
 !.env.example
+audit-*.png
+live-cleanup-*.png
+preview-*.png
+*.log

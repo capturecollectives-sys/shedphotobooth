@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -19,86 +19,73 @@
   <meta name="twitter:image" content="https://shedphotobooth.com/images/hero-bg.jpg">
   <meta name="theme-color" content="#0D0E16">
   <title>UK &amp; Scotland Photobooth Hire for Events | Shed Photobooth</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="stylesheet" href="css/style.css">
   <script type="application/ld+json">
   {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://shedphotobooth.com/#organization",
-      "name": "Shed Photobooth",
-      "legalName": "Capture Collective Ltd",
-      "url": "https://shedphotobooth.com/",
-      "logo": "https://shedphotobooth.com/images/logo-white.png",
-      "email": "capturecollectives@gmail.com",
-      "areaServed": [
-        "Scotland",
-        "United Kingdom"
-      ],
-      "sameAs": []
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://shedphotobooth.com/#website",
-      "url": "https://shedphotobooth.com/",
-      "name": "Shed Photobooth",
-      "publisher": {
-        "@id": "https://shedphotobooth.com/#organization"
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://shedphotobooth.com/#organization",
+        "name": "Shed Photobooth",
+        "legalName": "Capture Collective Ltd",
+        "url": "https://shedphotobooth.com/",
+        "logo": "https://shedphotobooth.com/images/logo-colour.png",
+        "email": "Photo@shedphotobooth.com",
+        "areaServed": ["Scotland", "United Kingdom"],
+        "sameAs": [
+          "https://www.instagram.com/shedphotobooth/",
+          "https://www.facebook.com/Shedphotobooths/",
+          "https://www.tiktok.com/@shedphotobooth"
+        ]
       },
-      "inLanguage": "en-GB"
-    },
-    {
-      "@type": "Service",
-      "@id": "https://shedphotobooth.com/#photobooth-hire",
-      "name": "Photobooth hire for events",
-      "serviceType": "Photobooth hire",
-      "provider": {
-        "@id": "https://shedphotobooth.com/#organization"
+      {
+        "@type": "WebSite",
+        "@id": "https://shedphotobooth.com/#website",
+        "url": "https://shedphotobooth.com/",
+        "name": "Shed Photobooth",
+        "publisher": { "@id": "https://shedphotobooth.com/#organization" },
+        "inLanguage": "en-GB"
       },
-      "areaServed": [
-        "Scotland",
-        "United Kingdom"
-      ],
-      "description": "Custom-built photobooth hire for festivals, weddings, Christmas markets, corporate events, sports events and brand activations across Scotland and the UK.",
-      "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock",
-        "url": "https://shedphotobooth.com/contact.html"
-      }
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://shedphotobooth.com/#faqs",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Do you offer photobooth hire outside Scotland?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Shed Photobooth is based in Scotland and available for events across the UK."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What events do you cover?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We cover festivals, weddings, Christmas markets, corporate events, sports events, private parties and brand activations."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can the photobooth be branded for our event?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Every booth, welcome screen and print layout can be designed to match the event, venue or brand identity."
-          }
+      {
+        "@type": "Service",
+        "@id": "https://shedphotobooth.com/#photobooth-hire",
+        "name": "Photobooth hire for events",
+        "serviceType": "Photobooth hire",
+        "provider": { "@id": "https://shedphotobooth.com/#organization" },
+        "areaServed": ["Scotland", "United Kingdom"],
+        "description": "Custom-built photobooth hire for festivals, weddings, Christmas markets, corporate events, sports events and brand activations across Scotland and the UK.",
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "url": "https://shedphotobooth.com/contact.html"
         }
-      ]
-    }
-  ]
-}
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://shedphotobooth.com/#faqs",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do you offer photobooth hire outside Scotland?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Shed Photobooth is based in Scotland and available for events across the UK." }
+          },
+          {
+            "@type": "Question",
+            "name": "What events do you cover?",
+            "acceptedAnswer": { "@type": "Answer", "text": "We cover festivals, weddings, Christmas markets, corporate events, sports events, private parties and brand activations." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can the photobooth be branded for our event?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every booth, welcome screen and print layout can be designed to match the event, venue or brand identity." }
+          }
+        ]
+      }
+    ]
+  }
   </script>
 </head>
 <body>
@@ -107,8 +94,7 @@
   <div class="container">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">
-        <!-- Replace images/logo-white.png with your actual logo file -->
-        <img src="images/logo-white.png" alt="Shed Photobooth" onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='flex'">
+        <img src="images/logo-brand-white.png" alt="Shed Photobooth" onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='flex'">
         <div class="nav__logo-text" id="nav-fallback">
           <span>Shed</span>Photobooth
         </div>
@@ -135,6 +121,7 @@
 
 <section class="hero">
   <div class="hero__bg">
+    <img class="hero__bg-img" src="images/hero-bg.jpg" alt="" fetchpriority="high">
     <div class="hero__bg-placeholder"></div>
   </div>
   <div class="hero__overlay"></div>
@@ -172,9 +159,21 @@
       <p class="section-sub">Shed Photobooth supplies custom photo booth hire for events that need more than a standard booth in a corner. We build branded, festival-ready experiences for Edinburgh, Glasgow, Scotland-wide events and selected bookings across the UK.</p>
     </div>
     <div class="services-grid reveal reveal-delay-1">
-      <div class="service-card"><div class="service-num">UK</div><h3 class="service-title">Photo Booth Hire</h3><p class="service-desc">Custom booth hire for weddings, private parties, corporate events, festivals and seasonal markets, with instant prints and digital galleries.</p></div>
-      <div class="service-card"><div class="service-num">SCOT</div><h3 class="service-title">Scotland Event Coverage</h3><p class="service-desc">Based in Scotland and built for high-footfall events in Edinburgh, Glasgow, Murrayfield, Christmas markets, fringe venues and outdoor sites.</p></div>
-      <div class="service-card"><div class="service-num">BRAND</div><h3 class="service-title">Branded Activations</h3><p class="service-desc">Bespoke exterior graphics, welcome screens, overlays and photo strip designs for launches, fan zones, sponsor areas and corporate activations.</p></div>
+      <div class="service-card">
+        <div class="service-num">UK</div>
+        <h3 class="service-title">Photo Booth Hire</h3>
+        <p class="service-desc">Custom booth hire for weddings, private parties, corporate events, festivals and seasonal markets, with instant prints and digital galleries.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">SCOT</div>
+        <h3 class="service-title">Scotland Event Coverage</h3>
+        <p class="service-desc">Based in Scotland and built for high-footfall events in Edinburgh, Glasgow, Murrayfield, Christmas markets, fringe venues and outdoor sites.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">BRAND</div>
+        <h3 class="service-title">Branded Activations</h3>
+        <p class="service-desc">Bespoke exterior graphics, welcome screens, overlays and photo strip designs for launches, fan zones, sponsor areas and corporate activations.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -260,21 +259,20 @@
 <section class="section section--dark" style="padding-top:0;">
   <div class="container">
     <div class="photo-grid reveal">
-      <!-- GALLERY: Replace each placeholder div with <img src="images/gallery-X.jpg" alt="..."> -->
       <div class="photo-grid__item">
-        <img src="images/gallery-1.jpg" alt="Shed Photobooth exterior" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/gallery-1.jpg" alt="Shed Photobooth exterior" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="photo-grid__item">
-        <img src="images/gallery-2.jpg" alt="Guests using the photobooth" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/gallery-2.jpg" alt="Guests using the photobooth" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="photo-grid__item">
-        <img src="images/gallery-3.jpg" alt="Branded photo output" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/gallery-3.jpg" alt="Branded photo output" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="photo-grid__item">
-        <img src="images/gallery-4.jpeg" alt="Festival event" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/gallery-4.jpeg" alt="Festival event" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="photo-grid__item">
-        <img src="images/gallery-5.jpg" alt="Christmas market setup" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/gallery-5.jpg" alt="Christmas market setup" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">
       </div>
     </div>
   </div>
@@ -424,18 +422,46 @@
   </div>
 </section>
 
-<section style="background: var(--amber); padding: 4rem 0;">
+<section class="section section--mid" id="faqs">
   <div class="container">
-    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:2rem;">
+    <div class="reveal" style="max-width:680px;margin-bottom:3rem;">
+      <span class="eyebrow">Photobooth Hire FAQs</span>
+      <h2 class="section-title">Quick Answers<br><span>Before You Book.</span></h2>
+      <p class="section-sub">Straight answers for event teams, couples and brands planning photobooth hire in Scotland or across the UK.</p>
+    </div>
+    <div class="faq-grid reveal reveal-delay-1">
+      <article class="faq-card">
+        <h3>Do you offer photobooth hire outside Scotland?</h3>
+        <p>Yes. Shed Photobooth is based in Scotland and available for selected events across the UK, with travel included in your tailored quote.</p>
+      </article>
+      <article class="faq-card">
+        <h3>What events do you cover?</h3>
+        <p>We cover festivals, weddings, Christmas markets, corporate events, sports events, private parties, venue activations and branded experiences.</p>
+      </article>
+      <article class="faq-card">
+        <h3>Can the photobooth be branded?</h3>
+        <p>Yes. The booth exterior, welcome screen, print layout and digital graphics can be designed around your event, sponsor or brand identity.</p>
+      </article>
+      <article class="faq-card">
+        <h3>What is included with each booking?</h3>
+        <p>Each booking includes delivery, setup, operation, instant prints, a digital gallery, custom graphics and on-site support throughout the event.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="brand-cta">
+  <div class="container">
+    <div class="brand-cta__inner">
       <div>
-        <h2 style="font-size:clamp(1.6rem,3vw,2.4rem); font-weight:900; text-transform:uppercase; color:var(--midnight); line-height:1.1; letter-spacing:-0.01em;">
+        <h2>
           Ready to bring the<br>shed to your event?
         </h2>
-        <p style="font-size:0.95rem; color:rgba(26,27,38,0.65); margin-top:0.75rem;">
+        <p>
           Tell us your date, location, and event type and we'll come back with availability and a tailored quote.
         </p>
       </div>
-      <a href="contact.html" class="btn" style="background:var(--midnight); color:var(--amber); white-space:nowrap;">Get in Touch &gt;</a>
+      <a href="contact.html" class="btn">Get in Touch &gt;</a>
     </div>
   </div>
 </section>
@@ -444,13 +470,13 @@
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <img src="images/logo-white.png" alt="Shed Photobooth" onerror="this.style.display='none'">
+        <img src="images/logo-brand-white.png" alt="Shed Photobooth" onerror="this.style.display='none'">
         <p>Custom-built photobooths for festivals, weddings, Christmas markets, sports events and more. Based in Scotland, available UK-wide.</p>
         <p style="font-size:0.78rem; color:rgba(160,160,160,0.5);">Trading name of Capture Collective Ltd<br>Registered in Scotland</p>
         <div class="footer__social">
-          <a href="https://www.instagram.com/shedphotobooth/" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
-          <a href="https://www.facebook.com/Shedphotobooths/" aria-label="Facebook" target="_blank" rel="noopener">FB</a>
-          <a href="https://www.tiktok.com/@shedphotobooth" aria-label="TikTok" target="_blank" rel="noopener">TT</a>
+          <a href="https://www.instagram.com/shedphotobooth/" aria-label="Instagram" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.facebook.com/Shedphotobooths/" aria-label="Facebook" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://www.tiktok.com/@shedphotobooth" aria-label="TikTok" target="_blank" rel="noopener">TikTok</a>
         </div>
       </div>
       <div class="footer__col">
@@ -475,7 +501,7 @@
       <div class="footer__col">
         <div class="footer__col-title">Contact</div>
         <ul>
-          <li><a href="mailto:capturecollectives@gmail.com">capturecollectives@gmail.com</a></li>
+          <li><a href="mailto:Photo@shedphotobooth.com">Photo@shedphotobooth.com</a></li>
           <li><a href="https://shedphotobooth.com/">shedphotobooth.com</a></li>
           <li style="color:var(--steel); font-size:0.85rem; font-weight:300;">Based in Scotland<br>Available UK-Wide</li>
         </ul>
@@ -492,12 +518,10 @@
 </footer>
 
 <script src="js/main.js"></script>
-<script>
-function toggleMenu() {
-  var menu = document.getElementById('mobileMenu');
-  menu.classList.toggle('open');
-}
-</script>
 <script src="js/analytics.js"></script>
 </body>
 </html>
+
+
+
+

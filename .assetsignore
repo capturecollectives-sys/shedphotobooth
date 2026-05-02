@@ -1,0 +1,5 @@
+.wrangler/
+audit-*.png
+live-cleanup-*.png
+preview-*.png
+*.log

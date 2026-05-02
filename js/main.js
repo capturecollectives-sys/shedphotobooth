@@ -62,43 +62,41 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // -- Contact form ------------------------------------------
-  var form = document.querySelector('.contact-form');
-  if (form) {
-    form.addEventListener('submit', function() {
-      var btn = form.querySelector('button[type="submit"]');
-      if (btn) {
-        btn.textContent = 'Sending...';
-        btn.disabled = true;
+  var contactForm = document.querySelector('.contact-form');
+  if (contactForm) {
+    var submitBtn = contactForm.querySelector('button[type="submit"]');
+    var defaultText = submitBtn ? submitBtn.textContent : '';
+
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (submitBtn) {
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+      }
+
+      try {
+        var res = await fetch(contactForm.action || 'https://formspree.io/f/mpqoevpk', {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          window.location.href = 'thank-you.html';
+          return;
+        }
+
+        throw new Error('Form submission failed');
+      } catch (err) {
+        if (submitBtn) {
+          submitBtn.textContent = 'Please try again';
+          submitBtn.disabled = false;
+          window.setTimeout(function() {
+            submitBtn.textContent = defaultText;
+          }, 3000);
+        }
       }
     });
   }
 
 });
-
-// -- CONTACT FORM -----------------------------------------
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-  const submitBtn = document.getElementById('submit-btn');
-  contactForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
-    const data = new FormData(contactForm);
-    try {
-      const res = await fetch('https://formspree.io/f/mpqoevpk', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        window.location.href = '/thank-you.html';
-      } else {
-        submitBtn.textContent = 'Something went wrong - please try again';
-        submitBtn.disabled = false;
-      }
-    } catch(err) {
-      submitBtn.textContent = 'Something went wrong - please try again';
-      submitBtn.disabled = false;
-    }
-  });
-}
