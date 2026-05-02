@@ -1,0 +1,268 @@
+name: Codex Apply Shed Updates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/codex-apply-shed-updates.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply approved local updates
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          
+          ROOT = Path(".")
+          
+          
+          def replace_once(text, old, new, label):
+              if new in text:
+                  return text
+              if old not in text:
+                  raise SystemExit(f"Could not find expected block for {label}")
+              return text.replace(old, new, 1)
+          
+          
+          style_path = ROOT / "css" / "style.css"
+          style = style_path.read_text(encoding="utf-8")
+          
+          old_nav = """.nav__logo {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            text-decoration: none;
+          }
+          .nav__logo img {
+            height: 72px;
+            width: auto;
+            max-width: 240px;
+            object-fit: contain;
+            display: block;
+          }
+          """
+          
+          new_nav = """.nav__logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            position: relative;
+            padding: 0.45rem 0.65rem;
+            border: 1px solid rgba(255,184,0,0.36);
+            border-radius: var(--radius);
+            background:
+              radial-gradient(circle at 50% 18%, rgba(255,184,0,0.18), transparent 62%),
+              linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01)),
+              rgba(13,14,22,0.72);
+            box-shadow:
+              0 0 10px rgba(255,184,0,0.22),
+              0 0 28px rgba(255,184,0,0.12),
+              inset 0 0 18px rgba(255,184,0,0.08);
+            overflow: hidden;
+          }
+          .nav__logo::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border: 1px solid rgba(245,245,245,0.12);
+            border-radius: calc(var(--radius) - 1px);
+            pointer-events: none;
+          }
+          .nav__logo::after {
+            content: '';
+            position: absolute;
+            inset: -30%;
+            background: linear-gradient(120deg, transparent 42%, rgba(255,255,255,0.18), transparent 58%);
+            transform: translateX(-65%);
+            opacity: 0.55;
+            animation: sign-sweep 5.5s ease-in-out infinite;
+            pointer-events: none;
+          }
+          @keyframes sign-sweep {
+            0%, 55% { transform: translateX(-65%); }
+            72%, 100% { transform: translateX(65%); }
+          }
+          .nav__logo img {
+            height: 66px;
+            width: auto;
+            max-width: 210px;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            z-index: 1;
+            clip-path: inset(0 10px 0 0);
+            filter:
+              drop-shadow(0 0 3px rgba(255,255,255,0.95))
+              drop-shadow(0 0 8px rgba(255,184,0,0.82))
+              drop-shadow(0 0 18px rgba(255,184,0,0.42));
+          }
+          """
+          
+          style = replace_once(style, old_nav, new_nav, "nav logo")
+          style = replace_once(
+              style,
+              """@media (max-width: 768px) {
+            .nav__logo img { height: 48px; max-width: 180px; }
+          }
+          """,
+              """@media (max-width: 768px) {
+            .nav__logo { padding: 0.35rem 0.5rem; }
+            .nav__logo img { height: 44px; max-width: 150px; }
+          }
+          """,
+              "mobile nav logo",
+          )
+          style_path.write_text(style, encoding="utf-8")
+          
+          
+          contact_path = ROOT / "contact.html"
+          contact = contact_path.read_text(encoding="utf-8")
+          contact = replace_once(
+              contact,
+              """        <img src="images/logo-white.svg" alt="Shed Photobooth"
+                       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">""",
+              """        <img src="images/logo-white.png" alt="Shed Photobooth"
+                       onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='flex'">
+                  <div class="nav__logo-text" id="nav-fallback"><span>Shed</span>Photobooth</div>""",
+              "contact nav logo",
+          )
+          contact = replace_once(contact, '<button class="nav__burger" aria-label="Menu">', '<button class="nav__burger" aria-label="Menu" onclick="toggleMenu()">', "contact burger")
+          contact = replace_once(contact, '<div class="nav__mobile">', '<div class="nav__mobile" id="mobileMenu">', "contact mobile menu")
+          contact_path.write_text(contact, encoding="utf-8")
+          
+          
+          work_path = ROOT / "our-work.html"
+          work = work_path.read_text(encoding="utf-8")
+          
+          client_css = """    .client-logo-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+                margin-bottom: 5rem;
+              }
+              .client-logo-card {
+                background: var(--midnight2);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                min-height: 96px;
+                padding: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+              .client-logo-card--stack {
+                flex-direction: column;
+                gap: 0.45rem;
+              }
+              .client-logo-card--light {
+                background: #ffffff;
+                border-color: rgba(255,255,255,0.18);
+              }
+              .client-logo-card img {
+                max-height: 56px;
+                max-width: 100%;
+                object-fit: contain;
+              }
+              .client-logo-card--stack img { max-height: 42px; }
+              .client-logo-label {
+                font-size: 0.62rem;
+                font-weight: 800;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: #004775;
+                line-height: 1;
+              }
+              @media (max-width: 768px) {
+                .client-logo-grid { grid-template-columns: repeat(2, 1fr); }
+              }
+              @media (max-width: 480px) {
+                .client-logo-grid { grid-template-columns: 1fr; }
+              }
+          """
+          
+          if ".client-logo-grid" not in work:
+              work = work.replace("  </style>", client_css + "  </style>", 1)
+          
+          work = replace_once(work, '<section class="section section--dark">\n  <div class="container">\n\n    <!-- Client logos -->', '<section class="section section--dark" id="clients">\n  <div class="container">\n\n    <!-- Client logos -->', "clients id")
+          
+          old_grid = """    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:5rem;" class="reveal">
+                <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+                  <img src="images/client-1.png" alt="Assembly Festival" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+                </div>
+                <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+                  <img src="images/client-2.png" alt="Edinburgh's Christmas" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+                </div>
+                <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+                  <img src="images/client-3.jpg" alt="Edinburgh's Winter Festival" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+                </div>
+                <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
+                  <img src="images/client-4.png" alt="Edinburgh's Hogmanay" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+                </div>
+              </div>"""
+          
+          new_grid = """    <div class="client-logo-grid reveal">
+                <div class="client-logo-card client-logo-card--light">
+                  <img src="images/client-1.png" alt="Assembly Festival">
+                </div>
+                <div class="client-logo-card">
+                  <img src="images/client-2.png" alt="Edinburgh's Christmas">
+                </div>
+                <div class="client-logo-card client-logo-card--light">
+                  <img src="images/client-3.jpg" alt="Edinburgh's Winter Festival">
+                </div>
+                <div class="client-logo-card client-logo-card--light">
+                  <img src="images/client-4.png" alt="Edinburgh's Hogmanay">
+                </div>
+                <div class="client-logo-card client-logo-card--light">
+                  <img src="images/client-scottish-rugby.svg" alt="Scottish Rugby">
+                </div>
+                <div class="client-logo-card client-logo-card--light client-logo-card--stack">
+                  <img src="images/client-scottish-gas.svg" alt="Scottish Gas">
+                  <span class="client-logo-label">Murrayfield</span>
+                </div>
+                <div class="client-logo-card client-logo-card--light">
+                  <img src="images/client-neighbourgood.svg" alt="The Neighbourgood Market">
+                </div>
+                <div class="client-logo-card">
+                  <img src="images/client-royal-highland-show.png" alt="Royal Highland Show">
+                </div>
+              </div>"""
+          
+          work = replace_once(work, old_grid, new_grid, "client logo grid")
+          work_path.write_text(work, encoding="utf-8")
+          
+          assets = {
+              ROOT / "images" / "client-scottish-rugby.svg": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Scottish_rugby_textlogo.svg",
+              ROOT / "images" / "client-scottish-gas.svg": "https://logoneate.com/wp-content/uploads/2021/04/scottish-gas.svg",
+              ROOT / "images" / "client-neighbourgood.svg": "https://theneighbourgoodmarket.com/theme/images/site/siteLogo.svg",
+              ROOT / "images" / "client-royal-highland-show.png": "https://www.royalhighlandshow.org/media/n02fda5v/rhs_primary-2026-white-year-and-date.png",
+          }
+          
+          for path, url in assets.items():
+              path.parent.mkdir(parents=True, exist_ok=True)
+              request = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+              with urlopen(request, timeout=30) as response:
+                  path.write_bytes(response.read())
+          
+          print("Applied Shed Photobooth client logo and neon nav updates.")
+          PY
+      - name: Commit approved updates and remove temporary workflow
+        run: |
+          git config user.name "Codex"
+          git config user.email "codex@users.noreply.github.com"
+          git rm .github/workflows/codex-apply-shed-updates.yml
+          git add css/style.css contact.html our-work.html images/client-scottish-rugby.svg images/client-scottish-gas.svg images/client-neighbourgood.svg images/client-royal-highland-show.png
+          git status --short
+          git commit -m "Improve client logos and site logo treatment"
+          git push origin HEAD:main
