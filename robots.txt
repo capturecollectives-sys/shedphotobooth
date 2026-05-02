@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://shedphotobooth.com/sitemap.xml
+
+# Deploy trigger: 2026-05-02T16:50:00Z
