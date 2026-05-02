@@ -14,8 +14,9 @@
   <div class="container">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">
-        <img src="images/logo-white.svg" alt="Shed Photobooth"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <img src="images/logo-white.png" alt="Shed Photobooth"
+             onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='flex'">
+        <div class="nav__logo-text" id="nav-fallback"><span>Shed</span>Photobooth</div>
       </a>
       <ul class="nav__links">
         <li><a href="index.html">Home</a></li>
@@ -23,13 +24,13 @@
         <li><a href="contact.html" class="active">Contact</a></li>
       </ul>
       <a href="contact.html" class="btn btn-primary nav__cta">Get a Quote</a>
-      <button class="nav__burger" aria-label="Menu">
+      <button class="nav__burger" aria-label="Menu" onclick="toggleMenu()">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </nav>
-<div class="nav__mobile">
+<div class="nav__mobile" id="mobileMenu">
   <a href="index.html">Home</a>
   <a href="our-work.html">Our Work</a>
   <a href="contact.html">Contact</a>

@@ -72,6 +72,50 @@
       text-transform: uppercase;
       color: rgba(160,160,160,0.35);
     }
+    .client-logo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 5rem;
+    }
+    .client-logo-card {
+      background: var(--midnight2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 96px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .client-logo-card--stack {
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .client-logo-card--light {
+      background: #ffffff;
+      border-color: rgba(255,255,255,0.18);
+    }
+    .client-logo-card img {
+      max-height: 56px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .client-logo-card--stack img { max-height: 42px; }
+    .client-logo-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #004775;
+      line-height: 1;
+    }
+    @media (max-width: 768px) {
+      .client-logo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .client-logo-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -312,7 +356,7 @@
 </section>
 
 <!-- ═══ NOTE 9: CLIENTS & TESTIMONIALS ═══ -->
-<section class="section section--dark">
+<section class="section section--dark" id="clients">
   <div class="container">
 
     <!-- Client logos -->
@@ -322,18 +366,31 @@
       <p class="section-sub" style="margin-top:0.75rem;">We've had the pleasure of working with some fantastic events, venues and organisations across Scotland and beyond.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:5rem;" class="reveal">
-      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
-        <img src="images/client-1.png" alt="Assembly Festival" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+    <div class="client-logo-grid reveal">
+      <div class="client-logo-card client-logo-card--light">
+        <img src="images/client-1.png" alt="Assembly Festival">
       </div>
-      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
-        <img src="images/client-2.png" alt="Edinburgh's Christmas" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      <div class="client-logo-card">
+        <img src="images/client-2.png" alt="Edinburgh's Christmas">
       </div>
-      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
-        <img src="images/client-3.jpg" alt="Edinburgh's Winter Festival" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      <div class="client-logo-card client-logo-card--light">
+        <img src="images/client-3.jpg" alt="Edinburgh's Winter Festival">
       </div>
-      <div style="background:var(--midnight2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;align-items:center;justify-content:center;height:80px;">
-        <img src="images/client-4.png" alt="Edinburgh's Hogmanay" style="max-height:50px;max-width:100%;object-fit:contain;filter:brightness(0) invert(0.75);">
+      <div class="client-logo-card client-logo-card--light">
+        <img src="images/client-4.png" alt="Edinburgh's Hogmanay">
+      </div>
+      <div class="client-logo-card client-logo-card--light">
+        <img src="images/client-scottish-rugby.svg" alt="Scottish Rugby">
+      </div>
+      <div class="client-logo-card client-logo-card--light client-logo-card--stack">
+        <img src="images/client-scottish-gas.svg" alt="Scottish Gas">
+        <span class="client-logo-label">Murrayfield</span>
+      </div>
+      <div class="client-logo-card client-logo-card--light">
+        <img src="images/client-neighbourgood.svg" alt="The Neighbourgood Market">
+      </div>
+      <div class="client-logo-card">
+        <img src="images/client-royal-highland-show.png" alt="Royal Highland Show">
       </div>
     </div>
 
