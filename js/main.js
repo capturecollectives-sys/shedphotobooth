@@ -1,6 +1,6 @@
-// ── Shed Photobooth — main.js ──────────────────────────────
+// -- Shed Photobooth - main.js ------------------------------
 
-// Mobile menu toggle — global so inline onclick works on every page
+// Mobile menu toggle - global so inline onclick works on every page
 function toggleMenu() {
   var menu = document.getElementById('mobileMenu');
   var burger = document.querySelector('.nav__burger');
@@ -18,7 +18,7 @@ function toggleMenu() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  // ── Sticky nav ────────────────────────────────────────────
+  // -- Sticky nav --------------------------------------------
   var nav = document.querySelector('.nav');
   if (nav) {
     window.addEventListener('scroll', function() {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── Close mobile menu on link click ──────────────────────
+  // -- Close mobile menu on link click ----------------------
   var mobileMenu = document.getElementById('mobileMenu');
   if (mobileMenu) {
     mobileMenu.querySelectorAll('a').forEach(function(a) {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── Scroll reveal ─────────────────────────────────────────
+  // -- Scroll reveal -----------------------------------------
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(entries) {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     revealEls.forEach(function(el) { el.classList.add('visible'); });
   }
 
-  // ── Contact form ──────────────────────────────────────────
+  // -- Contact form ------------------------------------------
   var form = document.querySelector('.contact-form');
   if (form) {
     form.addEventListener('submit', function() {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// ── CONTACT FORM ─────────────────────────────────────────
+// -- CONTACT FORM -----------------------------------------
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
   const submitBtn = document.getElementById('submit-btn');
@@ -93,11 +93,11 @@ if (contactForm) {
       if (res.ok) {
         window.location.href = '/thank-you.html';
       } else {
-        submitBtn.textContent = 'Something went wrong — please try again';
+        submitBtn.textContent = 'Something went wrong - please try again';
         submitBtn.disabled = false;
       }
     } catch(err) {
-      submitBtn.textContent = 'Something went wrong — please try again';
+      submitBtn.textContent = 'Something went wrong - please try again';
       submitBtn.disabled = false;
     }
   });
