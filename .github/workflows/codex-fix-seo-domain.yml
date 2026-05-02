@@ -1,0 +1,49 @@
+name: Codex Fix SEO Domain
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-domain:
+    if: github.event.head_commit.message == 'Add temporary Codex SEO domain fixer workflow'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Switch SEO URLs to primary domain
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          files = [
+              'index.html',
+              'our-work.html',
+              'contact.html',
+              'privacy.html',
+              'terms.html',
+              'thank-you.html',
+              'robots.txt',
+              'sitemap.xml',
+          ]
+          old = 'https://shedphotobooth.capturecollectives.workers.dev'
+          old_host = 'shedphotobooth.capturecollectives.workers.dev'
+          new = 'https://shedphotobooth.com'
+          new_host = 'shedphotobooth.com'
+          for name in files:
+              path = Path(name)
+              text = path.read_text(encoding='utf-8')
+              text = text.replace(old, new).replace(old_host, new_host)
+              path.write_text(text, encoding='utf-8')
+          Path('.github/workflows/codex-fix-seo-domain.yml').unlink()
+          PY
+      - name: Commit corrected SEO domain
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html our-work.html contact.html privacy.html terms.html thank-you.html robots.txt sitemap.xml .github/workflows/codex-fix-seo-domain.yml
+          git commit -m "Use primary domain for SEO URLs"
+          git push
