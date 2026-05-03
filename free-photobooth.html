@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online Photobooth | Shed Photobooth</title>
+  <meta name="description" content="Try the free Shed Photobooth online. Use your phone or laptop camera to take three photos and download a branded digital photo strip.">
+  <link rel="canonical" href="https://shedphotobooth.com/free-photobooth.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free Online Photobooth | Shed Photobooth">
+  <meta property="og:description" content="Take three photos in your browser and download a Shed Photobooth branded digital strip.">
+  <meta property="og:url" content="https://shedphotobooth.com/free-photobooth.html">
+  <meta property="og:image" content="https://shedphotobooth.com/images/og-image.jpg">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="images/logo-brand-white.png" alt="Shed Photobooth"
+             onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='flex'">
+        <div class="nav__logo-text" id="nav-fallback"><span>Shed</span>Photobooth</div>
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="our-work.html">Our Work</a></li>
+        <li><a href="free-photobooth.html" class="active">Free Booth</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="contact.html" class="btn btn-primary nav__cta">Get a Quote</a>
+      <button class="nav__burger" aria-label="Menu" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="our-work.html">Our Work</a>
+  <a href="free-photobooth.html">Free Booth</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn btn-primary" style="align-self:flex-start;margin-top:1rem;">Get a Quote</a>
+</div>
+
+<main class="booth-page">
+  <section class="booth-hero section">
+    <div class="container">
+      <div class="booth-hero__copy">
+        <span class="eyebrow">Free Online Photobooth</span>
+        <h1 class="section-title">Try the <span>Shed</span> strip.</h1>
+        <p class="section-sub">Use your phone or laptop camera to take three quick photos and download a Shed Photobooth branded digital strip. Your photos stay in your browser.</p>
+        <div class="booth-hero__actions">
+          <a href="#mini-booth" class="btn btn-primary btn-arrow" data-scroll-target="mini-booth">Start Booth</a>
+          <a href="contact.html" class="btn btn-outline">Book the Real Thing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark booth-live" id="mini-booth">
+    <div class="container">
+      <div class="booth-app" data-booth-app>
+        <div class="booth-stage">
+          <div class="booth-app__head">
+            <span class="eyebrow">Step inside</span>
+            <h2 class="section-title">Mini booth, <span>real strip.</span></h2>
+          </div>
+          <div class="booth-camera">
+            <video class="booth-camera__video" data-booth-video autoplay playsinline muted></video>
+            <div class="booth-camera__placeholder" data-booth-placeholder>
+              <img src="images/logo-brand-white.png" alt="">
+              <p>Camera preview appears here</p>
+            </div>
+            <div class="booth-countdown" data-booth-countdown aria-live="polite"></div>
+          </div>
+          <div class="booth-controls">
+            <button class="btn btn-primary" type="button" data-booth-start>Allow Camera</button>
+            <button class="btn btn-outline" type="button" data-booth-shoot disabled>Take 3 Photos</button>
+            <button class="btn btn-outline" type="button" data-booth-retake disabled>Retake</button>
+            <button class="btn btn-primary" type="button" data-booth-download disabled>Download Strip</button>
+          </div>
+          <p class="booth-note" data-booth-status>Nothing is uploaded or stored. Camera access is only used in this browser tab.</p>
+        </div>
+
+        <aside class="booth-result">
+          <div class="booth-style">
+            <p>Strip style</p>
+            <div class="booth-style__buttons" role="group" aria-label="Choose strip style">
+              <button class="booth-style__btn active" type="button" data-booth-style="amber">Amber Sign</button>
+              <button class="booth-style__btn" type="button" data-booth-style="mono">Black & White</button>
+            </div>
+          </div>
+          <div class="booth-strip-frame">
+            <canvas class="booth-strip" data-booth-strip width="900" height="2920" aria-label="Your Shed Photobooth strip"></canvas>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <img src="images/logo-brand-white.png" alt="Shed Photobooth">
+        <p>Custom-built photobooths for festivals, weddings, Christmas markets, sports events and more. Based in Scotland, available UK-wide.</p>
+        <p class="footer__legal">Trading name of Capture Collective Ltd<br>Registered in Scotland</p>
+        <div class="footer__socials">
+          <a href="https://www.instagram.com/shedphotobooth/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          <a href="https://www.facebook.com/Shedphotobooths/" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+          <a href="https://www.tiktok.com/@shedphotobooth" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Explore</h4>
+        <a href="index.html">Home</a>
+        <a href="our-work.html">Our Work</a>
+        <a href="free-photobooth.html">Free Booth</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <a href="index.html#services">Festival Photobooths</a>
+        <a href="index.html#services">Christmas Markets</a>
+        <a href="index.html#services">Sports Events</a>
+        <a href="index.html#services">Weddings & Private Hire</a>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <a href="mailto:Photo@shedphotobooth.com">Photo@shedphotobooth.com</a>
+        <a href="contact.html">Request a Quote</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 Shed Photobooth. All rights reserved.</span>
+      <div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/photobooth.js"></script>
+</body>
+</html>
