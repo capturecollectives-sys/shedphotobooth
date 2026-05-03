@@ -950,6 +950,10 @@ ul { list-style: none; }
 
 #mini-booth { scroll-margin-top: 150px; }
 
+.booth-live {
+  padding-top: 13.5rem;
+}
+
 .booth-stage,
 .booth-result {
   min-width: 0;
