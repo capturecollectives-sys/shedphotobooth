@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var photos = [];
   var isShooting = false;
   var stripStyle = 'amber';
+  var lastStyleTap = 0;
   var scrollLink = document.querySelector('[data-scroll-target="mini-booth"]');
   var brandLogo = new Image();
   brandLogo.src = 'images/logo-brand-white.png';
@@ -45,17 +46,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function drawStripBase() {
     var mono = stripStyle === 'mono';
-    var ink = mono ? '#111217' : '#1A1B26';
+    var ink = mono ? '#F5F5F0' : '#1A1B26';
     var accent = mono ? '#111217' : '#FFB800';
 
     ctx.fillStyle = ink;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
-    ctx.globalAlpha = mono ? 0.08 : 0.18;
+    ctx.globalAlpha = mono ? 0.05 : 0.18;
     var glow = ctx.createRadialGradient(canvas.width / 2, canvas.height - 430, 60, canvas.width / 2, canvas.height - 430, 520);
     glow.addColorStop(0, accent);
-    glow.addColorStop(1, 'rgba(255,184,0,0)');
+    glow.addColorStop(1, mono ? 'rgba(17,18,23,0)' : 'rgba(255,184,0,0)');
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function drawCornerMarks() {
     var mono = stripStyle === 'mono';
-    var accent = mono ? '#F5F5F5' : '#FFB800';
+    var accent = mono ? '#111217' : '#FFB800';
     var marks = [
       [38, 34, 1, 1],
       [canvas.width - 38, 34, -1, 1],
@@ -147,22 +148,23 @@ document.addEventListener('DOMContentLoaded', function() {
       : 360;
     var logoY = 2390;
 
-    if (brandLogo.complete && brandLogo.naturalWidth) {
+    if (!mono && brandLogo.complete && brandLogo.naturalWidth) {
       ctx.save();
-      if (mono) ctx.filter = 'grayscale(1)';
       ctx.drawImage(brandLogo, (canvas.width - logoWidth) / 2, logoY, logoWidth, logoHeight);
       ctx.restore();
     } else {
-      ctx.fillStyle = '#F5F5F5';
+      ctx.fillStyle = mono ? '#111217' : '#F5F5F5';
       ctx.textAlign = 'center';
       ctx.font = '900 120px Montserrat, Arial, sans-serif';
       ctx.fillText('SHED', canvas.width / 2, logoY + 160);
-      ctx.fillStyle = mono ? '#F5F5F5' : '#FFB800';
+      ctx.fillStyle = mono ? '#111217' : '#FFB800';
       ctx.font = '600 52px Montserrat, Arial, sans-serif';
       ctx.fillText('PHOTOBOOTH', canvas.width / 2, logoY + 220);
+      ctx.font = '500 22px Montserrat, Arial, sans-serif';
+      ctx.fillText('Custom Installations for Immersive Events', canvas.width / 2, logoY + 260);
     }
 
-    ctx.fillStyle = '#F5F5F5';
+    ctx.fillStyle = mono ? '#111217' : '#F5F5F5';
     ctx.textAlign = 'center';
     ctx.font = '800 30px Montserrat, Arial, sans-serif';
     ctx.fillText('www.shedphotobooth.com', canvas.width / 2, 2800);
@@ -294,12 +296,65 @@ document.addEventListener('DOMContentLoaded', function() {
     setStatus(stream ? 'Ready for another strip.' : 'Allow camera access to start.');
   }
 
-  function downloadStrip() {
+  function canvasToBlob() {
+    return new Promise(function(resolve, reject) {
+      if (canvas.toBlob) {
+        canvas.toBlob(function(blob) {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error('Could not prepare PNG image'));
+          }
+        }, 'image/png');
+        return;
+      }
+
+      var dataUrl = canvas.toDataURL('image/png');
+      var byteString = atob(dataUrl.split(',')[1]);
+      var mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0];
+      var bytes = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i += 1) {
+        bytes[i] = byteString.charCodeAt(i);
+      }
+      resolve(new Blob([bytes], { type: mimeString }));
+    });
+  }
+
+  async function downloadStrip() {
     if (photos.length !== 3) return;
-    var link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = 'shed-photobooth-strip.png';
-    link.click();
+
+    try {
+      var blob = await canvasToBlob();
+      var fileName = 'shed-photobooth-strip.png';
+      var file = typeof File !== 'undefined'
+        ? new File([blob], fileName, { type: 'image/png' })
+        : null;
+
+      if (file && navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+        await navigator.share({
+          files: [file],
+          title: 'Shed Photobooth Strip',
+          text: 'Your Shed Photobooth strip'
+        });
+        setStatus('Use Save Image or share your strip from the sheet.');
+        return;
+      }
+
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.type = 'image/png';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(function() {
+        URL.revokeObjectURL(url);
+      }, 1000);
+      setStatus('PNG image downloaded. If you are on iPhone, check Files or share it to Photos.');
+    } catch (err) {
+      setStatus('Your browser blocked the download. Press and hold the strip image or try sharing from Safari.');
+    }
   }
 
   drawPlaceholderStrip();
@@ -320,17 +375,29 @@ document.addEventListener('DOMContentLoaded', function() {
   shootBtn.addEventListener('click', shootStrip);
   retakeBtn.addEventListener('click', retake);
   downloadBtn.addEventListener('click', downloadStrip);
+  function selectStripStyle(button) {
+    if (!button) return;
+    stripStyle = button.getAttribute('data-booth-style') || 'amber';
+    styleButtons.forEach(function(item) {
+      item.classList.toggle('active', item === button);
+    });
+    if (photos.length) {
+      drawStrip();
+    } else {
+      drawPlaceholderStrip();
+    }
+  }
+
   styleButtons.forEach(function(button) {
+    button.addEventListener('pointerup', function(event) {
+      lastStyleTap = Date.now();
+      event.preventDefault();
+      selectStripStyle(button);
+    });
     button.addEventListener('click', function() {
+      if (Date.now() - lastStyleTap < 450) return;
       stripStyle = button.getAttribute('data-booth-style') || 'amber';
-      styleButtons.forEach(function(item) {
-        item.classList.toggle('active', item === button);
-      });
-      if (photos.length) {
-        drawStrip();
-      } else {
-        drawPlaceholderStrip();
-      }
+      selectStripStyle(button);
     });
   });
 });
