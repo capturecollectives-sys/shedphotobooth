@@ -8,3 +8,6 @@ audit-*.png
 live-cleanup-*.png
 preview-*.png
 *.log
+
+# design-skill working files (never deploy)
+.taste-skill/

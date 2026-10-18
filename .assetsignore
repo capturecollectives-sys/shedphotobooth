@@ -4,3 +4,5 @@ live-cleanup-*.png
 preview-*.png
 *.log
 .git
+.taste-skill/
+_pitch/
