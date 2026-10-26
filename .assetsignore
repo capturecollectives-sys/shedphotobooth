@@ -3,3 +3,4 @@ audit-*.png
 live-cleanup-*.png
 preview-*.png
 *.log
+.git
