@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Shed Photobooth at Glasgow's Winter Wonderland</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+@font-face { font-family: "ShedMontserrat"; src: url("a/fonts/Montserrat-Medium.ttf"); font-weight: 400 500; }
+@font-face { font-family: "ShedMontserrat"; src: url("a/fonts/Montserrat-Bold.ttf"); font-weight: 600 700; }
+@font-face { font-family: "ShedMontserrat"; src: url("a/fonts/Montserrat-ExtraBold.ttf"); font-weight: 800; }
+/* One visual world on purpose: the booth's own night-blue screens, so the page is dark in every theme.
+   Layout: a slim Shed banner, then the booth's 1920 x 1080 screen scaled to the width, then a few plain notes. */
+:root {
+  --page: color-mix(in srgb, #002085 45%, #000);
+  --page-ink: #EEF1FA;
+  --page-dim: #AEB7D6;
+  --line: rgba(255,255,255,0.14);
+  --accent: #E4C979;
+  --booth-bg: #002085;
+  --booth-ink: #FFFFFF;
+  --ring: #E62A4A;
+  --tick: #3CB878;
+  --font: "ShedMontserrat", "Montserrat", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--page); color: var(--page-ink); }
+body { font-family: var(--font); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 14px 28px; }
+.wrap { max-width: 1400px; margin: 0 auto; display: grid; gap: 14px; }
+.banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; }
+.banner h1 { font-size: clamp(16px, 2.1vw, 22px); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
+.banner p { margin: 2px 0 0; color: var(--page-dim); font-size: 14px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.controls button { font: 600 13px/1 var(--font); color: var(--page-ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer; }
+.controls button[aria-pressed="true"] { background: var(--accent); color: var(--booth-bg); border-color: var(--accent); }
+.controls button:focus-visible, .stage button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.stage-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,0.45); background: #000; }
+.turn { display: none; color: var(--page-dim); font-size: 13px; text-align: center; }
+@media (max-width: 600px) and (orientation: portrait) { .turn { display: block; } }
+.notes { color: var(--page-dim); font-size: 14px; line-height: 1.55; max-width: 70ch; }
+.notes strong { color: var(--page-ink); font-weight: 600; }
+
+/* ---- the booth's screen, in its own 1920 x 1080 pixels ---- */
+.stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; color: var(--booth-ink); font-family: var(--font); background: var(--booth-bg); user-select: none; -webkit-user-select: none; }
+.screen { position: absolute; inset: 0; }
+.bg { background: var(--booth-bg) url("a/background.jpg") center / cover no-repeat; }
+.bg::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.15); pointer-events: none; }
+.bg-thanks { background: var(--booth-bg) url("a/bg-thanks.jpg") center / cover no-repeat; }
+.bg-thanks::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.15); pointer-events: none; }
+.screen > * { position: absolute; }
+.title { left: 0; right: 0; text-align: center; font-weight: 700; font-size: 72px; top: 34px; margin: 0; letter-spacing: 0.005em; }
+.pill { border: 0; border-radius: 999px; font-family: var(--font); cursor: pointer; }
+.pill.accent { background: var(--accent); color: var(--booth-bg); font-weight: 700; }
+.pill.soft { background: rgba(255,255,255,0.22); color: var(--booth-ink); font-weight: 700; }
+.pill:disabled { opacity: 0.38; cursor: default; }
+.qr { background: #fff; border-radius: 26px; display: grid; place-items: center; cursor: pointer; border: 0; padding: 0; }
+.qr img { width: 88%; height: 88%; image-rendering: pixelated; }
+
+/* start */
+#s-start video { width: 100%; height: 100%; object-fit: cover; inset: 0; }
+#s-start .tap { inset: 0; background: transparent; border: 0; cursor: pointer; }
+
+/* paying */
+#s-pay .amount { left: 0; right: 0; top: 140px; text-align: center; font-weight: 800; font-size: 230px; color: var(--accent); line-height: 1; letter-spacing: -0.01em; }
+#s-pay .card { left: 893px; top: 410px; width: 134px; height: 94px; }
+#s-pay .status { left: 0; right: 0; top: 548px; text-align: center; font-size: 44px; font-weight: 500; }
+#s-pay .cancel { left: 822px; top: 776px; width: 276px; height: 104px; font-size: 46px; }
+#s-pay .reader { left: 0; right: 0; top: 940px; display: flex; justify-content: center; align-items: center; gap: 24px; }
+#s-pay .reader span { font-size: 30px; font-weight: 600; color: var(--booth-ink); opacity: 0.85; }
+#s-pay .reader button { position: static; height: 76px; padding: 0 38px; font-size: 32px; border: 3px dashed rgba(255,255,255,0.55); }
+#s-pay .answer { left: 0; right: 0; top: 380px; text-align: center; display: grid; justify-items: center; gap: 46px; }
+#s-pay .answer p { margin: 0; font-size: 58px; font-weight: 700; max-width: 1500px; text-wrap: balance; }
+#s-pay .answer .row { display: flex; gap: 40px; }
+#s-pay .answer .row button { position: static; height: 110px; padding: 0 60px; font-size: 46px; }
+
+/* result */
+#s-result .tick { left: 840px; top: 260px; width: 240px; height: 240px; }
+#s-result p { left: 0; right: 0; top: 560px; text-align: center; font-size: 76px; font-weight: 700; margin: 0; }
+
+/* layout */
+#s-layout .row { left: 60px; right: 60px; top: 160px; height: 760px; display: flex; gap: 46px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 10px 6px; }
+#s-layout .row::-webkit-scrollbar { display: none; }
+.lcard { flex: 0 0 860px; height: 720px; border-radius: 28px; background: rgba(255,255,255,0.09); border: 5px solid transparent; display: grid; grid-template-rows: 1fr auto auto; justify-items: center; padding: 26px 26px 22px; cursor: pointer; scroll-snap-align: start; color: var(--booth-ink); font-family: var(--font); }
+.lcard[aria-pressed="true"] { border-color: var(--accent); background: rgba(255,255,255,0.16); }
+.lcard img { max-width: 100%; max-height: 520px; object-fit: contain; align-self: center; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35)); }
+.lcard b { font-size: 40px; font-weight: 700; margin-top: 18px; }
+.lcard small { font-size: 26px; opacity: 0.85; margin-top: 4px; }
+#s-layout .hint { left: 70px; top: 985px; font-size: 32px; }
+#s-layout .track { left: 580px; top: 1000px; width: 860px; height: 14px; border-radius: 7px; background: rgba(255,255,255,0.2); overflow: hidden; }
+#s-layout .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 7px; }
+#s-layout .start { left: 1516px; top: 958px; width: 384px; height: 98px; font-size: 50px; }
+
+/* countdown and review */
+#s-count { background: #000; }
+#s-count .live { inset: 0; width: 100%; height: 100%; object-fit: contain; animation: breathe 3.2s ease-in-out infinite alternate; }
+@keyframes breathe { from { transform: scale(1); } to { transform: scale(1.015) translateY(-4px); } }
+#s-count .shade-top { left: 0; right: 0; top: 0; height: 220px; background: linear-gradient(rgba(0,0,0,0.65), transparent); }
+#s-count .shade-bot { left: 0; right: 0; bottom: 0; height: 220px; background: linear-gradient(transparent, rgba(0,0,0,0.65)); }
+#s-count .which { left: 0; right: 0; top: 48px; text-align: center; font-size: 54px; font-weight: 700; }
+#s-count .look { left: 0; right: 0; bottom: 52px; text-align: center; font-size: 48px; font-weight: 600; }
+#s-count .ring { left: 780px; top: 360px; width: 360px; height: 360px; }
+#s-count .num { left: 780px; top: 360px; width: 360px; height: 360px; display: grid; place-items: center; font-size: 200px; font-weight: 800; text-shadow: 0 4px 18px rgba(0,0,0,0.6); }
+#s-count .flash { inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+#s-count .flash.go { animation: flash 0.45s ease-out; }
+@keyframes flash { from { opacity: 0.95; } to { opacity: 0; } }
+#s-count .review { left: 330px; top: 160px; width: 1260px; height: 760px; border: 14px solid var(--accent); border-radius: 30px; overflow: hidden; background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+#s-count .review img { width: 100%; height: 100%; object-fit: cover; }
+
+/* working */
+#s-working .spin { left: 850px; top: 330px; width: 220px; height: 220px; border-radius: 50%; border: 14px dashed var(--accent); animation: spin 2.4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#s-working p { left: 0; right: 0; top: 620px; text-align: center; font-size: 64px; font-weight: 700; margin: 0; }
+
+/* look */
+#s-look .paperbox { left: 40px; top: 150px; width: 900px; height: 900px; display: grid; place-items: center; }
+.paper { background: #fff; padding: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.45); display: block; }
+.paper img { display: block; width: 100%; height: 100%; object-fit: contain; }
+#s-look .hint { left: 980px; width: 880px; top: 150px; text-align: center; font-size: 32px; }
+#s-look .grid { left: 1000px; top: 210px; width: 840px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.ltile { position: relative; border-radius: 16px; background: rgba(255,255,255,0.12); border: 5px solid transparent; padding: 8px 8px 6px; cursor: pointer; display: grid; gap: 6px; font-family: var(--font); color: var(--booth-ink); }
+.ltile[aria-pressed="true"] { border-color: var(--accent); }
+.ltile img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; display: block; }
+.ltile b { font-size: 22px; font-weight: 700; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#s-look .print { left: 990px; top: 930px; width: 860px; height: 100px; font-size: 48px; }
+
+/* sharing */
+#s-share .thumb { left: 360px; top: 150px; width: 460px; height: 420px; display: grid; place-items: center; }
+#s-share .thumb .paper { padding: 9px; background: #fff; }
+#s-share .qr { left: 880px; top: 142px; width: 412px; height: 412px; }
+#s-share .scan { left: 850px; top: 572px; width: 472px; text-align: center; font-size: 34px; line-height: 1.25; }
+#s-share .qrhead { left: 1350px; top: 150px; width: 300px; font-size: 48px; font-weight: 700; line-height: 1.2; }
+#s-share .arrow { left: 1300px; top: 150px; width: 300px; height: 330px; overflow: visible; }
+#s-share .onway { left: 0; right: 0; top: 676px; text-align: center; font-size: 32px; color: var(--accent); }
+#s-share .bar { left: 590px; top: 724px; width: 820px; height: 12px; border-radius: 6px; background: rgba(255,255,255,0.22); overflow: hidden; }
+#s-share .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 6px; }
+#s-share .ready { left: 0; right: 0; top: 750px; text-align: center; font-size: 30px; color: var(--accent); }
+#s-share .extra { left: 584px; top: 820px; width: 520px; height: 170px; display: grid; place-content: center; gap: 2px; box-shadow: 0 0 46px rgba(255,220,140,0.55); animation: glow 1.8s ease-in-out infinite alternate; }
+#s-share .extra b { font-size: 62px; font-weight: 700; }
+#s-share .extra small { font-size: 30px; font-weight: 600; }
+@keyframes glow { from { box-shadow: 0 0 26px rgba(255,220,140,0.35); } to { box-shadow: 0 0 60px rgba(255,220,140,0.75); } }
+#s-share .finish { left: 1150px; top: 862px; width: 210px; height: 88px; font-size: 36px; }
+.privacy { left: 0; right: 0; text-align: center; font-size: 21px; opacity: 0.85; }
+#s-share .privacy { top: 1034px; }
+
+/* extra prints */
+#s-extra .qty { left: 0; right: 0; top: 300px; display: flex; justify-content: center; align-items: center; gap: 80px; }
+#s-extra .qty button { position: static; width: 150px; height: 150px; font-size: 90px; line-height: 1; }
+#s-extra .qty output { font-size: 190px; font-weight: 800; min-width: 200px; text-align: center; }
+#s-extra .each { left: 0; right: 0; top: 520px; text-align: center; font-size: 40px; }
+#s-extra .total { left: 0; right: 0; top: 590px; text-align: center; font-size: 64px; font-weight: 800; color: var(--accent); }
+#s-extra .confirm { left: 560px; top: 760px; width: 800px; height: 120px; font-size: 54px; }
+#s-extra .no { left: 810px; top: 912px; width: 300px; height: 90px; font-size: 38px; }
+
+/* progress */
+#s-progress .count { left: 0; right: 0; top: 330px; text-align: center; font-size: 170px; font-weight: 800; color: var(--accent); }
+#s-progress .bar { left: 560px; top: 620px; width: 800px; height: 16px; border-radius: 8px; background: rgba(255,255,255,0.22); overflow: hidden; }
+#s-progress .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+
+/* thanks */
+#s-thanks .box { left: 512px; top: 40px; width: 896px; height: 810px; border: 3px solid var(--accent); border-radius: 30px; background: rgba(0, 10, 50, 0.45); }
+#s-thanks .t1 { left: 512px; width: 896px; top: 70px; text-align: center; font-size: 66px; font-weight: 700; }
+#s-thanks .t2 { left: 512px; width: 896px; top: 158px; text-align: center; font-size: 36px; }
+#s-thanks .qr { left: 762px; top: 222px; width: 396px; height: 396px; }
+#s-thanks .done { left: 570px; top: 642px; width: 780px; height: 140px; font-size: 84px; }
+#s-thanks .closes { left: 512px; width: 896px; top: 802px; text-align: center; font-size: 24px; }
+#s-thanks .privacy { top: 876px; }
+
+/* the guest's phone (outside the booth): what the code opens */
+.phone-back { position: fixed; inset: 0; background: rgba(0,0,10,0.72); display: grid; place-items: center; z-index: 20; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.phone { width: min(360px, 92vw); max-height: 92vh; overflow-y: auto; background: #0E1430; border: 10px solid #1C1F2B; border-radius: 40px; padding: 22px 16px 18px; display: grid; gap: 14px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+.phone h2 { margin: 0; font-size: 18px; font-weight: 700; text-align: center; }
+.phone p { margin: 0; font-size: 13px; color: var(--page-dim); text-align: center; line-height: 1.45; }
+.phone img { width: 100%; border-radius: 8px; display: block; }
+.phone .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--page-dim); }
+.phone button { font: 600 14px/1 var(--font); border: 0; border-radius: 999px; padding: 12px; background: var(--accent); color: var(--booth-bg); cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { #s-count .live, #s-share .extra, #s-working .spin { animation: none; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <div>
+      <h1 id="pg-title"></h1>
+      <p id="pg-sub"></p>
+    </div>
+    <div class="controls">
+      <button id="c-sound" type="button" aria-pressed="true">Sound on</button>
+      <button id="c-quick" type="button" aria-pressed="false">Quick countdown</button>
+      <button id="c-restart" type="button">Start again</button>
+    </div>
+  </header>
+
+  <div class="stage-wrap" id="wrap">
+    <div class="stage" id="stage">
+
+      <section class="screen" id="s-start">
+        <video id="vid" src="a/welcome.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <button class="tap" id="tap" type="button" aria-label="Touch the screen to start"></button>
+      </section>
+
+      <section class="screen bg" id="s-pay" hidden>
+        <h2 class="title" id="pay-title"></h2>
+        <div class="amount" id="pay-amount"></div>
+        <svg class="card" viewBox="0 0 134 94" aria-hidden="true"><rect x="4" y="4" width="126" height="86" rx="14" fill="none" stroke="currentColor" stroke-width="7"/><rect x="4" y="26" width="126" height="9" fill="currentColor"/><rect x="92" y="62" width="22" height="9" rx="2" fill="currentColor"/></svg>
+        <div class="status" id="pay-status"></div>
+        <button class="pill soft cancel" id="pay-cancel" type="button"></button>
+        <div class="reader" id="pay-reader"><span>Pretend card reader:</span><button class="pill soft" id="pay-tap" type="button">Tap a card</button><button class="pill soft" id="pay-decline" type="button">A card that is declined</button></div>
+        <div class="answer" id="pay-answer" hidden><p id="pay-answer-text"></p><div class="row" id="pay-answer-row"></div></div>
+      </section>
+
+      <section class="screen bg" id="s-result" hidden>
+        <svg class="tick" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="112" fill="var(--tick)"/><path d="M66 124 L104 160 L178 84" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p id="result-text"></p>
+      </section>
+
+      <section class="screen bg" id="s-layout" hidden>
+        <h2 class="title" id="layout-title"></h2>
+        <div class="row" id="layout-row"></div>
+        <div class="hint" id="layout-hint"></div>
+        <div class="track"><i id="layout-track"></i></div>
+        <button class="pill accent start" id="layout-start" type="button" disabled></button>
+      </section>
+
+      <section class="screen" id="s-count" hidden>
+        <img class="live" id="count-live" alt="">
+        <div class="shade-top"></div><div class="shade-bot"></div>
+        <div class="which" id="count-which"></div>
+        <div class="look" id="count-look"></div>
+        <svg class="ring" id="count-ring" viewBox="0 0 360 360" aria-hidden="true">
+          <circle cx="180" cy="180" r="160" fill="rgba(0,0,0,0.28)" stroke="rgba(255,255,255,0.22)" stroke-width="20"/>
+          <circle id="count-arc" cx="180" cy="180" r="160" fill="none" stroke="var(--ring)" stroke-width="20" stroke-linecap="round" transform="rotate(-90 180 180)" stroke-dasharray="1005.3" stroke-dashoffset="1005.3"/>
+          <circle cx="180" cy="180" r="171" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="2"/>
+        </svg>
+        <div class="num" id="count-num"></div>
+        <div class="review" id="count-review" hidden><img id="count-review-img" alt=""></div>
+        <div class="flash" id="count-flash"></div>
+      </section>
+
+      <section class="screen bg" id="s-working" hidden>
+        <div class="spin"></div>
+        <p id="working-text"></p>
+      </section>
+
+      <section class="screen bg" id="s-look" hidden>
+        <h2 class="title" id="look-title"></h2>
+        <div class="paperbox"><div class="paper" id="look-paper"><img id="look-print" alt=""></div></div>
+        <div class="hint" id="look-hint"></div>
+        <div class="grid" id="look-grid"></div>
+        <button class="pill accent print" id="look-printbtn" type="button"></button>
+      </section>
+
+      <section class="screen bg" id="s-share" hidden>
+        <h2 class="title" id="share-title"></h2>
+        <div class="thumb"><div class="paper" id="share-paper"><img id="share-print" alt=""></div></div>
+        <button class="qr" id="share-qr" type="button" aria-label="See what the guest's code opens"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAACECAAAAAB0L9x7AAABeUlEQVR42u2bzQrDMAyDo7H3f2XvNAgh/mkvq7Ovl460BIE0W3Zc2fj99RqAAAQgAAEIQACiMYj3uqDgZZve8XzI91llH+jooYnh8B1x7Omgug90PF8TK3e2WZ9jxXxXcR/o6KeJ7LJNfLCAd+g4XxNa7hWvAR29NWGFOBFpo7oPdPTQhC7kjV0eseI+0PFIELKbOcOLF4PccWR/wusvmKMBFWMNdUdPTax1hPfbnNggJ79E/hM6+tQdFX6VeIdKXQIdPWvRLA7sNGJBDIKOXh5TF847lPjNEeQZ6Oh1BnalB+XFBwV1KnT0iRNK4oGnFSX5wYK+FnT0OQOb/9tZ3LBCzsFPnOExPS9gBd+w0xi548w+ZuQXRpBToKOvn7h7Lhb5SuqOc+esVKxJKv1L6Dhjzso764h6mpboAjr6z9RYUHvunmUzFtBxxpyV5yXXdSv0LqCj95xVVlPohj+Fjt51h4qzNHzf8T/9CegABCAAAQhAAAIQy/UBlOWCGRrGnJUAAAAASUVORK5CYII=" alt=""></button>
+        <div class="scan" id="share-scan"></div>
+        <svg class="arrow" viewBox="0 0 300 330" aria-hidden="true"><path d="M262 30 C 300 170, 220 270, 30 286" fill="none" stroke="var(--accent)" stroke-width="13" stroke-linecap="round"/><path d="M68 248 L 26 287 L 70 322" fill="none" stroke="var(--accent)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="qrhead" id="share-qrhead"></div>
+        <div class="onway" id="share-onway"></div>
+        <div class="bar"><i id="share-bar"></i></div>
+        <div class="ready" id="share-ready"></div>
+        <button class="pill accent extra" id="share-extra" type="button"><b id="share-extra-b"></b><small id="share-extra-s"></small></button>
+        <button class="pill soft finish" id="share-finish" type="button"></button>
+        <div class="privacy" id="share-privacy"></div>
+      </section>
+
+      <section class="screen bg" id="s-extra" hidden>
+        <h2 class="title" id="extra-title"></h2>
+        <div class="qty"><button class="pill soft" id="extra-minus" type="button" aria-label="One fewer">&minus;</button><output id="extra-n">1</output><button class="pill soft" id="extra-plus" type="button" aria-label="One more">+</button></div>
+        <div class="each" id="extra-each"></div>
+        <div class="total" id="extra-total"></div>
+        <button class="pill accent confirm" id="extra-confirm" type="button"></button>
+        <button class="pill soft no" id="extra-no" type="button"></button>
+      </section>
+
+      <section class="screen bg" id="s-progress" hidden>
+        <h2 class="title" id="progress-title" style="top:150px"></h2>
+        <div class="count" id="progress-count"></div>
+        <div class="bar"><i id="progress-bar"></i></div>
+      </section>
+
+      <section class="screen bg-thanks" id="s-thanks" hidden>
+        <div class="box"></div>
+        <div class="t1" id="thanks-t1"></div>
+        <div class="t2" id="thanks-t2"></div>
+        <button class="qr" id="thanks-qr" type="button" aria-label="See what the guest's code opens"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAACECAAAAAB0L9x7AAABeUlEQVR42u2bzQrDMAyDo7H3f2XvNAgh/mkvq7Ovl460BIE0W3Zc2fj99RqAAAQgAAEIQACiMYj3uqDgZZve8XzI91llH+jooYnh8B1x7Omgug90PF8TK3e2WZ9jxXxXcR/o6KeJ7LJNfLCAd+g4XxNa7hWvAR29NWGFOBFpo7oPdPTQhC7kjV0eseI+0PFIELKbOcOLF4PccWR/wusvmKMBFWMNdUdPTax1hPfbnNggJ79E/hM6+tQdFX6VeIdKXQIdPWvRLA7sNGJBDIKOXh5TF847lPjNEeQZ6Oh1BnalB+XFBwV1KnT0iRNK4oGnFSX5wYK+FnT0OQOb/9tZ3LBCzsFPnOExPS9gBd+w0xi548w+ZuQXRpBToKOvn7h7Lhb5SuqOc+esVKxJKv1L6Dhjzso764h6mpboAjr6z9RYUHvunmUzFtBxxpyV5yXXdSv0LqCj95xVVlPohj+Fjt51h4qzNHzf8T/9CegABCAAAQhAAAIQy/UBlOWCGRrGnJUAAAAASUVORK5CYII=" alt=""></button>
+        <button class="pill accent done" id="thanks-done" type="button"></button>
+        <div class="closes" id="thanks-closes"></div>
+        <div class="privacy" id="thanks-privacy"></div>
+      </section>
+
+    </div>
+  </div>
+  <p class="turn">Turn your phone sideways for a bigger booth screen.</p>
+
+  <div class="notes" id="pg-foot"></div>
+</div>
+
+<div class="phone-back" id="phone" hidden>
+  <div class="phone" role="dialog" aria-modal="true" aria-labelledby="phone-h">
+    <span class="lbl">On the guest's phone</span>
+    <h2 id="phone-h"><span id="phone-event"></span></h2>
+    <img id="phone-print" alt="The guest's print">
+    <img id="phone-gif" alt="The guest's moving picture">
+    <p>On the real booth, the code opens the guest's own page at photos.shedphotobooth.com, with the print and the moving picture to keep. In this preview the code itself only goes to shedphotobooth.com.</p>
+    <button type="button" id="phone-close">Back to the booth</button>
+  </div>
+</div>
+
+<script>
+const CFG = {"title": "Glasgow's Winter Wonderland", "subtitle": "Booth preview: pretend photos, no camera, no card taken", "shed": "st-enoch", "foot": "Shed Photobooth's own preview of the booth for Glasgow's Winter Wonderland. The screens, designs and looks are the booth's own (ShedBooth 0.9.5, glasgow-winter-wonderland pack version 1), with pretend photos in place of the camera and a pretend card: nothing is taken and nothing is printed. Tap the code on the last screens to see what a guest gets on their phone.", "sessionPence": 600, "extraPence": 300, "countFirst": 10, "countLater": 7, "review": 1.0, "gifMs": 500, "designs": [{"id": "gww-postcard", "name": "Greetings from St Enoch", "w": 1800, "h": 1200, "photos": 3}, {"id": "gww-starlit", "name": "Merry Christmas, Glasgow", "w": 1800, "h": 1200, "photos": 2}, {"id": "gww-wonderland", "name": "Wonderland", "w": 1200, "h": 1800, "photos": 4}, {"id": "gww-winter-strip", "name": "Winter Strip", "w": 600, "h": 1800, "photos": 4}, {"id": "gww-wonderland-nights", "name": "Wonderland Nights", "w": 1200, "h": 1800, "photos": 2}, {"id": "gww-gazette", "name": "The Wonderland Gazette", "w": 1200, "h": 1800, "photos": 2}], "looks": [{"id": "original", "name": "Original"}, {"id": "analogue", "name": "Analogue"}, {"id": "bw", "name": "Black & White"}, {"id": "film", "name": "Film"}, {"id": "glam", "name": "Glam"}, {"id": "flash", "name": "Flash"}, {"id": "softglow", "name": "Soft Glow"}, {"id": "disposable", "name": "Disposable"}, {"id": "golden", "name": "Golden Hour"}, {"id": "breeze-golden-200", "name": "Golden 200"}, {"id": "breeze-vivid-100", "name": "Vivid 100"}, {"id": "breeze-slide-50", "name": "Slide 50"}, {"id": "breeze-booth-strip", "name": "Booth Strip"}, {"id": "breeze-grit-400-b-w", "name": "Grit 400 B&W"}, {"id": "breeze-booth-warm", "name": "Booth Warm"}, {"id": "breeze-sepia-toned", "name": "Sepia toned"}], "voices": ["present-card", "approved", "declined"]};
+const T = {"pay.heading.session": "Pay to start", "pay.heading.extra": "Pay for your extra prints", "pay.status.presentCard": "Tap, insert or hold your card on the reader", "pay.status.processing": "Checking your card. Please wait...", "pay.cancel": "Cancel", "pay.end.declined": "Your card was declined. Nothing was taken. Try another card?", "pay.end.tryAgain": "Try another card", "pay.end.noThanks": "No thanks", "pay.end.cancelled": "Payment cancelled. Nothing was taken.", "result.accepted": "Payment accepted", "layout.title": "Choose your layout", "layout.photos": "{count} photos", "layout.onePhoto": "1 photo", "layout.hint": "Tap a design, then Start", "layout.start": "Start", "working.composing": "Making your photos", "countdown.progress": "Photo {index} of {total}", "countdown.look": "Look at the camera", "filter.title": "Choose your look", "filter.hint": "Touch a look to see it on your print", "filter.print": "Print", "sharing.title": "Get your photos", "sharing.scan": "Scan with your phone camera", "sharing.qrHeading": "Get your digital pictures here", "sharing.printReadyIn": "Your print will be ready in {time}", "sharing.privacy": "Online for 30 days at most, deleted 24 hours after you save. Privacy: photos.shedphotobooth.com/privacy", "sharing.print": "Your print is on its way", "sharing.extra": "Extra prints", "sharing.extraEach": "{amount} each", "sharing.finish": "Finish", "extra.title": "How many extra prints?", "extra.each": "{amount} each", "extra.total": "Total {amount}", "extra.confirm": "Confirm and pay", "extra.cancel": "No thanks", "progress.title": "Printing your pictures", "progress.done": "{done} of {total} done", "thanks.title": "Thanks for stopping by!", "thanks.codeHeading": "Get your digital pictures now", "thanks.done": "Done", "thanks.closesIn": "Closes in {time}"};
+const C = { prices: { session: CFG.sessionPence, extra: CFG.extraPence }, designs: CFG.designs, looks: CFG.looks, voices: CFG.voices,
+  timing: { first: CFG.countFirst, later: CFG.countLater, review: CFG.review, printSeconds: 14, thanksSeconds: 119, gifFrameMs: CFG.gifMs },
+  maxExtra: 5, gifFrames: 4 };
+document.getElementById('pg-title').textContent = 'Shed Photobooth: booth preview for ' + CFG.title;
+document.getElementById('pg-sub').textContent = CFG.subtitle;
+document.getElementById('pg-foot').textContent = CFG.foot;
+document.getElementById('phone-event').textContent = 'Your photos from ' + CFG.title;
+const $ = id => document.getElementById(id);
+const fill = (s, map) => s.replace(/\{(\w+)\}/g, (m, k) => (k in map ? map[k] : m));
+const money = p => "£" + (p / 100).toFixed(2);
+const S = { sound: true, quick: false, design: null, look: "original", extraN: 1, paying: "session" };
+let timers = [];
+const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
+const every = (fn, ms) => { const t = setInterval(fn, ms); timers.push(t); return t; };
+const stopAll = () => { timers.forEach(t => { clearTimeout(t); clearInterval(t); }); timers = []; if (S.raf) cancelAnimationFrame(S.raf); };
+
+/* the booth's screen scaled to the width it has */
+const wrap = $("wrap"), stage = $("stage");
+const fit = () => { stage.style.transform = "scale(" + (wrap.clientWidth / 1920) + ")"; };
+new ResizeObserver(fit).observe(wrap); fit();
+
+/* sound: only the owner's own three voices for the paying moments */
+const voices = {};
+for (const k of C.voices) { try { voices[k] = new Audio("a/voice-" + k + ".wav"); voices[k].preload = "auto"; } catch (e) {} }
+const say = k => { if (!S.sound || !voices[k]) return; try { voices[k].currentTime = 0; voices[k].play().catch(() => {}); } catch (e) {} };
+
+function show(id) {
+  stopAll();
+  document.querySelectorAll(".screen").forEach(s => { s.hidden = (s.id !== id); });
+  const v = $("vid");
+  if (id === "s-start") { try { v.currentTime = 0; v.play().catch(() => {}); } catch (e) {} } else { try { v.pause(); } catch (e) {} }
+}
+
+/* ---- start ---- */
+function toStart() { show("s-start"); }
+$("tap").addEventListener("click", () => { S.paying = "session"; toPay(); });
+
+/* ---- paying ---- */
+function toPay() {
+  show("s-pay");
+  const amount = S.paying === "session" ? C.prices.session : C.prices.extra * S.extraN;
+  $("pay-title").textContent = S.paying === "session" ? T["pay.heading.session"] : T["pay.heading.extra"];
+  $("pay-amount").textContent = money(amount);
+  $("pay-status").textContent = T["pay.status.presentCard"];
+  $("pay-cancel").textContent = T["pay.cancel"];
+  $("pay-cancel").hidden = false; $("pay-reader").hidden = false; $("pay-answer").hidden = true;
+  say("present-card");
+}
+$("pay-tap").addEventListener("click", () => {
+  $("pay-cancel").hidden = true; $("pay-reader").hidden = true;
+  $("pay-status").textContent = T["pay.status.processing"];
+  later(() => {
+    show("s-result"); $("result-text").textContent = T["result.accepted"]; say("approved");
+    later(() => { if (S.paying === "session") toLayout(); else toProgress(); }, 2000);
+  }, 1600);
+});
+$("pay-decline").addEventListener("click", () => {
+  $("pay-cancel").hidden = true; $("pay-reader").hidden = true;
+  $("pay-status").textContent = T["pay.status.processing"];
+  later(() => {
+    say("declined");
+    $("pay-answer").hidden = false; $("pay-answer-text").textContent = T["pay.end.declined"];
+    const row = $("pay-answer-row"); row.textContent = "";
+    const again = document.createElement("button"); again.className = "pill accent"; again.type = "button"; again.textContent = T["pay.end.tryAgain"]; again.onclick = toPay;
+    const no = document.createElement("button"); no.className = "pill soft"; no.type = "button"; no.textContent = T["pay.end.noThanks"]; no.onclick = () => (S.paying === "session" ? toStart() : toShare(true));
+    row.append(again, no);
+    $("pay-status").textContent = "";
+  }, 1600);
+});
+$("pay-cancel").addEventListener("click", () => {
+  $("pay-cancel").hidden = true; $("pay-reader").hidden = true; $("pay-status").textContent = "";
+  $("pay-answer").hidden = false; $("pay-answer-text").textContent = T["pay.end.cancelled"]; $("pay-answer-row").textContent = "";
+  later(() => (S.paying === "session" ? toStart() : toShare(true)), 3000);
+});
+
+/* ---- choose your layout ---- */
+function toLayout() {
+  show("s-layout"); S.design = null;
+  $("layout-title").textContent = T["layout.title"];
+  $("layout-hint").textContent = T["layout.hint"];
+  $("layout-start").textContent = T["layout.start"]; $("layout-start").disabled = true;
+  const row = $("layout-row"); row.textContent = ""; row.scrollLeft = 0;
+  for (const d of C.designs) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "lcard"; b.setAttribute("aria-pressed", "false");
+    const img = document.createElement("img"); img.src = "a/chooser/" + d.id + ".jpg"; img.alt = "";
+    const n = document.createElement("b"); n.textContent = d.name;
+    const c = document.createElement("small"); c.textContent = d.photos === 1 ? T["layout.onePhoto"] : fill(T["layout.photos"], { count: d.photos });
+    b.append(img, n, c);
+    b.onclick = () => { S.design = d; row.querySelectorAll(".lcard").forEach(x => x.setAttribute("aria-pressed", String(x === b))); $("layout-start").disabled = false; };
+    row.append(b);
+  }
+  const track = () => { const max = row.scrollWidth - row.clientWidth; const w = Math.max(0.12, row.clientWidth / row.scrollWidth); $("layout-track").style.width = (w * 100) + "%"; $("layout-track").style.left = (max > 0 ? (row.scrollLeft / max) * (1 - w) * 100 : 0) + "%"; };
+  row.onscroll = track; requestAnimationFrame(track);
+}
+$("layout-start").addEventListener("click", () => { if (S.design) { S.shot = 1; countdown(); } });
+
+/* ---- countdown, photo, review ---- */
+function countdown() {
+  show("s-count");
+  const d = S.design, k = S.shot;
+  const secs = S.quick ? 3 : (k === 1 ? C.timing.first : C.timing.later);
+  $("count-live").src = "a/photos/photo-" + (((k - 1) % 4) + 1) + ".jpg";
+  $("count-which").textContent = fill(T["countdown.progress"], { index: k, total: d.photos });
+  $("count-look").textContent = T["countdown.look"];
+  $("count-review").hidden = true; $("count-ring").style.display = ""; $("count-num").style.display = "";
+  const arc = $("count-arc"), L = 1005.3, t0 = performance.now();
+  const step = now => {
+    const el = (now - t0) / 1000;
+    const left = Math.max(0, secs - el);
+    $("count-num").textContent = Math.max(1, Math.ceil(left));
+    arc.setAttribute("stroke-dashoffset", String(L * (1 - Math.min(1, el / secs))));
+    if (left > 0) S.raf = requestAnimationFrame(step); else snap();
+  };
+  S.raf = requestAnimationFrame(step);
+}
+function snap() {
+  const k = S.shot, d = S.design;
+  $("count-ring").style.display = "none"; $("count-num").style.display = "none";
+  const f = $("count-flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+  later(() => {
+    $("count-review-img").src = "a/photos/photo-" + (((k - 1) % 4) + 1) + ".jpg"; $("count-review").hidden = false;
+    later(() => { if (k < d.photos) { S.shot = k + 1; countdown(); } else toWorking(); }, C.timing.review * 1000);
+  }, 380);
+}
+
+/* ---- making your photos ---- */
+function toWorking() { show("s-working"); $("working-text").textContent = T["working.composing"]; later(toLook, 2200); }
+
+/* ---- choose your look ---- */
+const printSrc = (d, look) => "a/prints/" + d.id + "/" + look + ".jpg";
+function paperSize(el, d, boxW, boxH, pad) {
+  const r = d.w / d.h; let w = boxW - pad * 2, h = w / r;
+  if (h > boxH - pad * 2) { h = boxH - pad * 2; w = h * r; }
+  el.style.width = (w + pad * 2) + "px"; el.style.height = (h + pad * 2) + "px";
+}
+function toLook() {
+  show("s-look"); S.look = C.looks[0].id;
+  const d = S.design;
+  $("look-title").textContent = T["filter.title"]; $("look-hint").textContent = T["filter.hint"]; $("look-printbtn").textContent = T["filter.print"];
+  paperSize($("look-paper"), d, 900, 880, 14);
+  $("look-print").src = printSrc(d, S.look);
+  for (const l of C.looks) { const i = new Image(); i.src = printSrc(d, l.id); }
+  const g = $("look-grid"); g.textContent = "";
+  for (const l of C.looks) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "ltile"; b.setAttribute("aria-pressed", String(l.id === S.look));
+    const img = document.createElement("img"); img.src = "a/looks/" + l.id + ".jpg"; img.alt = "";
+    const n = document.createElement("b"); n.textContent = l.name;
+    b.append(img, n);
+    b.onclick = () => { S.look = l.id; $("look-print").src = printSrc(d, l.id); g.querySelectorAll(".ltile").forEach(x => x.setAttribute("aria-pressed", String(x === b))); };
+    g.append(b);
+  }
+}
+$("look-printbtn").addEventListener("click", () => toShare(false));
+
+/* ---- get your photos ---- */
+function toShare(back) {
+  show("s-share");
+  const d = S.design;
+  $("share-title").textContent = T["sharing.title"]; $("share-scan").textContent = T["sharing.scan"]; $("share-qrhead").textContent = T["sharing.qrHeading"];
+  $("share-onway").textContent = T["sharing.print"]; $("share-extra-b").textContent = T["sharing.extra"]; $("share-extra-s").textContent = fill(T["sharing.extraEach"], { amount: money(C.prices.extra) });
+  $("share-finish").textContent = T["sharing.finish"]; $("share-privacy").textContent = T["sharing.privacy"];
+  paperSize($("share-paper"), d, 460, 420, 9);
+  $("share-print").src = printSrc(d, S.look);
+  const total = S.quick ? 6 : C.timing.printSeconds; if (!back) S.printStart = performance.now();
+  const tick = () => {
+    const el = (performance.now() - S.printStart) / 1000, left = Math.max(0, Math.ceil(total - el));
+    $("share-bar").style.width = Math.min(100, (el / total) * 100) + "%";
+    $("share-ready").textContent = fill(T["sharing.printReadyIn"], { time: "0:" + String(left).padStart(2, "0") });
+  };
+  tick(); every(tick, 250);
+}
+$("share-extra").addEventListener("click", toExtra);
+$("share-finish").addEventListener("click", toThanks);
+
+/* ---- extra prints ---- */
+function toExtra() {
+  show("s-extra"); S.extraN = 1;
+  $("extra-title").textContent = T["extra.title"]; $("extra-confirm").textContent = T["extra.confirm"]; $("extra-no").textContent = T["extra.cancel"];
+  $("extra-each").textContent = fill(T["extra.each"], { amount: money(C.prices.extra) });
+  extraShow();
+}
+function extraShow() { $("extra-n").textContent = S.extraN; $("extra-total").textContent = fill(T["extra.total"], { amount: money(C.prices.extra * S.extraN) }); $("extra-minus").disabled = S.extraN <= 1; $("extra-plus").disabled = S.extraN >= C.maxExtra; }
+$("extra-minus").addEventListener("click", () => { if (S.extraN > 1) { S.extraN--; extraShow(); } });
+$("extra-plus").addEventListener("click", () => { if (S.extraN < C.maxExtra) { S.extraN++; extraShow(); } });
+$("extra-confirm").addEventListener("click", () => { S.paying = "extra"; toPay(); });
+$("extra-no").addEventListener("click", () => toShare(true));
+
+/* ---- printing your pictures (the extra prints) ---- */
+function toProgress() {
+  show("s-progress");
+  const n = S.extraN; let done = 0;
+  $("progress-title").textContent = T["progress.title"];
+  const each = S.quick ? 1500 : 4000;
+  const upd = () => { $("progress-count").textContent = fill(T["progress.done"], { done, total: n }); $("progress-bar").style.width = (done / n * 100) + "%"; };
+  upd();
+  every(() => { done++; upd(); if (done >= n) { stopAll(); later(toThanks, 1200); } }, each);
+}
+
+/* ---- thank you ---- */
+function toThanks() {
+  show("s-thanks");
+  $("thanks-t1").textContent = T["thanks.title"]; $("thanks-t2").textContent = T["thanks.codeHeading"]; $("thanks-done").textContent = T["thanks.done"]; $("thanks-privacy").textContent = T["sharing.privacy"];
+  let left = C.timing.thanksSeconds;
+  const upd = () => { $("thanks-closes").textContent = fill(T["thanks.closesIn"], { time: Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0") }); };
+  upd(); every(() => { left--; if (left <= 0) toStart(); else upd(); }, 1000);
+}
+$("thanks-done").addEventListener("click", toStart);
+
+/* ---- the guest's phone ---- */
+let gifTimer = null;
+function openPhone() {
+  if (!S.design) return;
+  $("phone-print").src = printSrc(S.design, S.look);
+  const frames = [];
+  for (let i = 1; i <= C.gifFrames; i++) { const im = new Image(); im.src = "a/gif/" + S.look + "/" + i + ".jpg"; frames.push(im); }
+  let f = 0; const frame = () => { $("phone-gif").src = frames[f].src; f = (f + 1) % frames.length; };
+  frame(); gifTimer = setInterval(frame, C.timing.gifFrameMs);
+  $("phone").hidden = false; $("phone-close").focus();
+}
+function closePhone() { clearInterval(gifTimer); $("phone").hidden = true; }
+$("share-qr").addEventListener("click", openPhone); $("thanks-qr").addEventListener("click", openPhone);
+$("phone-close").addEventListener("click", closePhone);
+$("phone").addEventListener("click", e => { if (e.target === $("phone")) closePhone(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("phone").hidden) closePhone(); });
+
+/* ---- the page's own buttons ---- */
+$("c-sound").addEventListener("click", e => { S.sound = !S.sound; e.currentTarget.setAttribute("aria-pressed", String(S.sound)); e.currentTarget.textContent = S.sound ? "Sound on" : "Sound off"; });
+$("c-quick").addEventListener("click", e => { S.quick = !S.quick; e.currentTarget.setAttribute("aria-pressed", String(S.quick)); });
+$("c-restart").addEventListener("click", () => { closePhone(); toStart(); });
+
+toStart();
+</script>
+
+</body>
+</html>
