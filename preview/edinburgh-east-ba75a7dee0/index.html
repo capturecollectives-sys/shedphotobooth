@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Shed Photobooth at Edinburgh's Christmas, East Market</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* A booth preview: the booth's own 1920 x 1080 screens on a stage scaled to fit, with a thin control bar above.
+   One deliberate dark look (the booth is dark); the stage takes the event's own colours from its pack. */
+@font-face { font-family: "Montserrat"; src: url("a/fonts/Montserrat-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Montserrat"; src: url("a/fonts/Montserrat-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Montserrat"; src: url("a/fonts/Montserrat-ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: swap; }
+:root {
+  color-scheme: dark;
+  --page: #101413;          /* the room around the screen */
+  --panel: #1b2120;         /* control bar and sheets */
+  --line: #2e3836;
+  --ink: #eef2f1;
+  --ink-soft: #a9b5b2;
+  --shed: #E62A4A;          /* Shed fuchsia: the countdown ring, as on every booth */
+  --accent: #D3B150;     /* the event's accent (buttons, prices) */
+  --deep: #0B3A33;         /* the event's background colour: words on the gold buttons */
+  --words: #FFFFFF;       /* the event's text colour */
+  --scrim: 0.45;
+  --ui: "Montserrat", "Segoe UI", system-ui, sans-serif;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--page); color: var(--ink); font-family: var(--ui); }
+.shell { display: flex; flex-direction: column; gap: 10px; min-height: 100%; padding-block: 10px 14px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); box-sizing: border-box; }
+.bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.bar h1 { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: .01em; text-wrap: balance; flex: 1 1 260px; min-width: 0; }
+.bar h1 small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 12px; margin-top: 2px; }
+.ctl { display: flex; flex-wrap: wrap; gap: 8px; }
+.ctl button { font: 600 13px var(--ui); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+.ctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.ctl button.note-btn { border-color: var(--accent); }
+.ctl button:focus-visible, .sheet button:focus-visible, .sheet textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { position: relative; width: 100%; max-width: calc((100vh - 120px) * 16 / 9); min-width: 0; aspect-ratio: 16 / 9; margin: 0 auto; overflow: hidden; border-radius: 10px; background: #000; box-shadow: 0 0 0 1px var(--line); }
+.foot { font-size: 12px; color: var(--ink-soft); text-align: center; line-height: 1.5; max-width: 980px; margin: 0 auto; }
+.turn { display: none; font-size: 13px; font-weight: 600; color: var(--accent); text-align: center; margin: 0; }
+@media (max-width: 700px) and (orientation: portrait) { .turn { display: block; } }
+
+/* ---- the booth's stage: 1920 x 1080, scaled ---- */
+.stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; color: var(--words); font-family: var(--ui); user-select: none; -webkit-user-select: none; }
+.screen { position: absolute; inset: 0; }
+.bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.bg::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--scrim); }
+.layer { position: absolute; inset: 0; }
+.center { display: flex; flex-direction: column; align-items: center; }
+.h { font-weight: 700; font-size: 64px; text-align: center; position: absolute; left: 0; right: 0; top: 34px; margin: 0; }
+.gold-btn { background: var(--accent); color: var(--deep); border: 0; border-radius: 22px; font: 700 44px var(--ui); cursor: pointer; }
+.gold-btn:disabled { opacity: .45; cursor: default; }
+.grey-btn { background: rgba(255,255,255,.18); color: var(--words); border: 0; border-radius: 999px; font: 700 40px var(--ui); cursor: pointer; }
+.demo-btn { background: transparent; color: var(--words); border: 3px dashed rgba(255,255,255,.55); border-radius: 999px; font: 600 28px var(--ui); padding: 18px 34px; cursor: pointer; }
+.demo-btn b { color: var(--accent); }
+.qr { background: #fff; border-radius: 26px; display: grid; place-items: center; cursor: pointer; }
+.qr canvas, .qr img { width: 86%; height: auto; image-rendering: pixelated; }
+.privacy { position: absolute; left: 0; right: 0; text-align: center; font-size: 18px; font-weight: 500; opacity: .85; }
+
+/* start */
+#s-start video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#s-start .tap { position: absolute; inset: 0; cursor: pointer; }
+
+/* pay */
+#s-pay .amount { position: absolute; left: 0; right: 0; top: 150px; text-align: center; font-weight: 800; font-size: 230px; color: var(--accent); line-height: 1; }
+#s-pay .card { position: absolute; left: 50%; top: 425px; width: 130px; height: 92px; margin-left: -65px; border: 7px solid var(--words); border-radius: 14px; box-sizing: border-box; }
+#s-pay .card::before { content: ""; position: absolute; left: 0; right: 0; top: 18px; height: 12px; background: var(--words); }
+#s-pay .card::after { content: ""; position: absolute; right: 14px; bottom: 12px; width: 26px; height: 9px; background: var(--words); border-radius: 3px; }
+#s-pay .status { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-size: 44px; font-weight: 500; }
+#s-pay .cancel { position: absolute; left: 50%; top: 770px; width: 300px; height: 110px; margin-left: -150px; }
+#s-pay .demo-row { position: absolute; left: 0; right: 0; top: 930px; display: flex; justify-content: center; gap: 30px; }
+#s-pay .declined { position: absolute; left: 0; right: 0; top: 520px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+#s-pay .declined p { font-size: 46px; font-weight: 600; margin: 0; text-align: center; max-width: 1400px; }
+#s-pay .declined .row { display: flex; gap: 40px; }
+#s-pay .declined button { height: 110px; padding: 0 60px; }
+
+/* result */
+#s-result .tick { position: absolute; left: 50%; top: 300px; width: 260px; height: 260px; margin-left: -130px; border-radius: 50%; background: #2bb673; display: grid; place-items: center; }
+#s-result .tick svg { width: 150px; height: 150px; }
+#s-result p { position: absolute; left: 0; right: 0; top: 620px; text-align: center; font-size: 76px; font-weight: 700; margin: 0; }
+
+/* layout */
+#s-layout .row { position: absolute; left: 0; right: 0; top: 140px; height: 800px; overflow-x: auto; overflow-y: hidden; display: flex; align-items: center; gap: 30px; padding: 0 60px; box-sizing: border-box; scrollbar-width: none; }
+#s-layout .row::-webkit-scrollbar { display: none; }
+.dcard { flex: none; height: 760px; background: rgba(255,255,255,.10); border: 6px solid transparent; border-radius: 30px; padding: 26px 26px 18px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.dcard.on { border-color: var(--accent); background: rgba(255,255,255,.16); }
+.dcard .pic { height: 560px; display: grid; place-items: center; }
+.dcard img { max-height: 560px; max-width: 100%; display: block; box-shadow: 0 6px 24px rgba(0,0,0,.45); }
+.dcard .nm { font-size: 38px; font-weight: 700; margin-top: 22px; text-align: center; line-height: 1.12; }
+.dcard .ph { font-size: 26px; font-weight: 500; opacity: .85; margin-top: 6px; }
+#s-layout .foot-row { position: absolute; left: 40px; right: 40px; top: 975px; height: 90px; display: flex; align-items: center; gap: 40px; }
+#s-layout .hint { font-size: 30px; font-weight: 500; white-space: nowrap; }
+#s-layout .slider { flex: 1; height: 26px; border-radius: 13px; background: rgba(255,255,255,.18); position: relative; }
+#s-layout .slider i { position: absolute; top: 0; bottom: 0; border-radius: 13px; background: var(--accent); }
+#s-layout .start { width: 400px; height: 90px; }
+
+/* countdown and review */
+#s-count { background: #000; }
+#s-count img.live { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+#s-count .top, #s-count .bot { position: absolute; left: 0; right: 0; height: 220px; }
+#s-count .top { top: 0; background: linear-gradient(rgba(0,0,0,.72), transparent); }
+#s-count .bot { bottom: 0; background: linear-gradient(transparent, rgba(0,0,0,.72)); }
+#s-count .top p, #s-count .bot p { margin: 0; position: absolute; left: 0; right: 0; text-align: center; font-size: 60px; font-weight: 700; color: #fff; }
+#s-count .top p { top: 46px; } #s-count .bot p { bottom: 46px; }
+#s-count .ring { position: absolute; left: 50%; top: 50%; width: 360px; height: 360px; margin: -180px 0 0 -180px; }
+#s-count .ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+#s-count .ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 210px; font-weight: 800; color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.6); }
+#s-count .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+#s-count .review { position: absolute; inset: 0; background: rgba(0,0,0,.88); display: grid; place-items: center; }
+#s-count .review div { width: 1440px; height: 960px; border: 12px solid var(--accent); border-radius: 40px; background-size: cover; background-position: center; }
+
+/* working */
+#s-work .spin { position: absolute; left: 50%; top: 330px; width: 220px; height: 220px; margin-left: -110px; border-radius: 50%; border: 14px dashed var(--accent); box-sizing: border-box; animation: spin 2.4s linear infinite; }
+#s-work p { position: absolute; left: 0; right: 0; top: 620px; margin: 0; text-align: center; font-size: 64px; font-weight: 700; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* look */
+#s-look .paper { position: absolute; left: 110px; top: 130px; width: 760px; height: 910px; display: grid; place-items: center; }
+#s-look .paper img { max-width: 100%; max-height: 100%; background: #fff; padding: 14px; box-sizing: border-box; box-shadow: 0 10px 40px rgba(0,0,0,.5); }
+#s-look .hint { position: absolute; left: 960px; width: 900px; top: 132px; text-align: center; font-size: 30px; font-weight: 500; }
+#s-look .grid { position: absolute; left: 990px; top: 180px; width: 840px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.lk { border: 5px solid transparent; border-radius: 16px; padding: 6px 6px 8px; background: rgba(255,255,255,.10); cursor: pointer; text-align: center; }
+.lk.on { border-color: var(--accent); }
+.lk img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 8px; display: block; }
+.lk span { display: block; font-size: 21px; font-weight: 700; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#s-look .print { position: absolute; left: 970px; width: 880px; top: 945px; height: 100px; }
+
+/* sharing */
+#s-share .thumb { position: absolute; left: 330px; top: 140px; width: 440px; height: 540px; display: grid; place-items: center; }
+#s-share .thumb img { max-width: 100%; max-height: 100%; background: #fff; padding: 8px; box-sizing: border-box; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+#s-share .qr { position: absolute; left: 820px; top: 150px; width: 410px; height: 410px; }
+#s-share .scan { position: absolute; left: 780px; width: 490px; top: 580px; text-align: center; font-size: 36px; font-weight: 500; line-height: 1.25; }
+#s-share .qh { position: absolute; left: 1290px; top: 160px; width: 300px; font-size: 48px; font-weight: 700; line-height: 1.18; }
+#s-share svg.arrow { position: absolute; left: 1230px; top: 120px; width: 420px; height: 420px; overflow: visible; }
+#s-share .onway { position: absolute; left: 0; right: 0; top: 700px; text-align: center; font-size: 32px; font-weight: 500; color: var(--accent); }
+#s-share .pbar { position: absolute; left: 540px; width: 840px; top: 752px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.2); overflow: hidden; }
+#s-share .pbar i { display: block; height: 100%; width: 0; background: var(--accent); }
+#s-share .ready { position: absolute; left: 0; right: 0; top: 780px; text-align: center; font-size: 30px; font-weight: 500; color: var(--accent); }
+#s-share .extra { position: absolute; left: 570px; top: 860px; width: 540px; height: 170px; border-radius: 34px; display: flex; flex-direction: column; justify-content: center; gap: 6px; box-shadow: 0 0 40px rgba(211,177,80,.45); }
+#s-share .extra b { font-size: 58px; } #s-share .extra small { font-size: 32px; font-weight: 600; }
+#s-share .finish { position: absolute; left: 1150px; top: 900px; width: 220px; height: 92px; font-size: 38px; }
+#s-share .privacy { top: 1046px; }
+
+/* extra prints */
+#s-extra .qty { position: absolute; left: 0; right: 0; top: 260px; display: flex; justify-content: center; align-items: center; gap: 90px; }
+#s-extra .qty button { width: 170px; height: 170px; border-radius: 50%; font-size: 110px; line-height: 1; padding: 0; }
+#s-extra .qty output { font-size: 220px; font-weight: 800; min-width: 220px; text-align: center; }
+#s-extra .each { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-size: 40px; font-weight: 500; }
+#s-extra .total { position: absolute; left: 0; right: 0; top: 625px; text-align: center; font-size: 70px; font-weight: 800; color: var(--accent); }
+#s-extra .row { position: absolute; left: 0; right: 0; top: 800px; display: flex; justify-content: center; gap: 50px; }
+#s-extra .row button { height: 130px; padding: 0 70px; }
+
+/* printing */
+#s-progress p { position: absolute; left: 0; right: 0; text-align: center; margin: 0; }
+#s-progress .big { top: 420px; font-size: 130px; font-weight: 800; color: var(--accent); }
+
+/* thanks */
+#s-thanks .box { position: absolute; left: 500px; top: 40px; width: 920px; height: 820px; border: 4px solid var(--accent); border-radius: 36px; background: rgba(0,0,0,.42); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding-top: 40px; }
+#s-thanks .box h2 { margin: 0; font-size: 66px; font-weight: 800; }
+#s-thanks .box p { margin: 12px 0 26px; font-size: 38px; font-weight: 500; }
+#s-thanks .qr { width: 380px; height: 380px; }
+#s-thanks .done { margin-top: 34px; width: 780px; height: 150px; font-size: 92px; border-radius: 28px; }
+#s-thanks .closes { margin-top: 14px; font-size: 24px; font-weight: 500; }
+#s-thanks .closes.red { color: #ff6b6b; }
+#s-thanks .privacy { top: 880px; }
+
+/* the guest's phone */
+.over { position: fixed; inset: 0; background: rgba(5,8,8,.86); display: grid; place-items: center; z-index: 20; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.phone { width: min(380px, 100%); max-height: 100%; overflow-y: auto; background: #f4f4f2; color: #1b1b1b; border-radius: 34px; border: 10px solid #0c0c0c; box-sizing: border-box; }
+.phone header { padding: 16px 18px 10px; font: 700 15px var(--ui); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.phone header button { font: 700 14px var(--ui); border: 0; border-radius: 999px; padding: 8px 14px; background: #1b1b1b; color: #fff; cursor: pointer; }
+.phone .gif { width: 100%; display: block; }
+.phone h3 { font: 700 15px var(--ui); margin: 16px 18px 8px; }
+.phone .pr { width: calc(100% - 36px); margin: 0 18px; display: block; box-shadow: 0 2px 10px rgba(0,0,0,.2); }
+.phone .ph { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 18px 18px; }
+.phone .ph img { width: 100%; border-radius: 6px; display: block; }
+.phone p.note { font: 500 12px var(--ui); color: #555; margin: 10px 18px 18px; line-height: 1.45; }
+
+/* Pete's notes */
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--panel); border-top: 1px solid var(--line); box-shadow: 0 -10px 40px rgba(0,0,0,.5); padding-block: 16px max(18px, env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.sheet .in { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+.sheet h2 { margin: 0; font-size: 17px; }
+.sheet .where { font-size: 13px; color: var(--ink-soft); }
+.sheet textarea { width: 100%; box-sizing: border-box; min-height: 92px; resize: vertical; font: 500 15px var(--ui); color: var(--ink); background: var(--page); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.sheet .acts { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.sheet .acts button { font: 700 14px var(--ui); border-radius: 999px; padding: 10px 18px; cursor: pointer; border: 1px solid var(--line); background: var(--page); color: var(--ink); }
+.sheet .acts button.save { background: var(--accent); color: var(--deep); border-color: var(--accent); }
+.sheet .msg { font-size: 13px; color: var(--ink-soft); }
+.sheet ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-height: 30vh; overflow-y: auto; }
+.sheet li { font-size: 14px; line-height: 1.4; background: var(--page); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: flex; gap: 10px; justify-content: space-between; align-items: flex-start; }
+.sheet li span { min-width: 0; overflow-wrap: anywhere; }
+.sheet li small { display: block; color: var(--ink-soft); font-size: 12px; }
+.sheet li button { flex: none; font: 600 12px var(--ui); border: 1px solid var(--line); background: transparent; color: var(--ink-soft); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { #s-work .spin { animation: none; } }
+</style>
+
+</head>
+<body>
+<div class="shell">
+  <div class="bar">
+    <h1 id="title"></h1>
+    <div class="ctl">
+      <button id="b-restart" type="button">Start again</button>
+      <button id="b-sound" type="button" aria-pressed="true">Sound on</button>
+      <button id="b-quick" type="button" aria-pressed="false">Quick countdown</button>
+      <button id="b-phone" type="button">The guest's phone</button>
+      <button id="b-note" type="button" class="note-btn" hidden>Change something on this screen</button>
+    </div>
+  </div>
+  <div class="wrap" id="wrap">
+    <div class="stage" id="stage">
+
+      <section class="screen" id="s-start">
+        <video id="video" src="a/welcome.mp4" autoplay muted loop playsinline preload="auto"></video>
+        <div class="tap" id="start-tap" role="button" aria-label="Touch the screen to start"></div>
+      </section>
+
+      <section class="screen" id="s-pay" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <h2 class="h" id="pay-h">Pay to start</h2>
+          <div class="amount" id="pay-amount"></div>
+          <div class="card" id="pay-card"></div>
+          <div class="status" id="pay-status">Tap, insert or hold your card on the reader</div>
+          <button class="grey-btn cancel" id="pay-cancel" type="button">Cancel</button>
+          <div class="demo-row" id="pay-demo">
+            <button class="demo-btn" id="pay-ok" type="button"><b>DEMO</b> Pretend to tap a card</button>
+            <button class="demo-btn" id="pay-no" type="button"><b>DEMO</b> A card that is declined</button>
+          </div>
+          <div class="declined" id="pay-declined" hidden>
+            <p>Your card was declined. Nothing was taken. Try another card?</p>
+            <div class="row">
+              <button class="gold-btn" id="dec-again" type="button">Try another card</button>
+              <button class="grey-btn" id="dec-no" type="button">No thanks</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="s-result" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+          <p>Payment accepted</p>
+        </div>
+      </section>
+
+      <section class="screen" id="s-layout" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <h2 class="h">Choose your layout</h2>
+          <div class="row" id="lay-row"></div>
+          <div class="foot-row">
+            <span class="hint">Tap a design, then Start</span>
+            <div class="slider"><i id="lay-handle"></i></div>
+            <button class="gold-btn start" id="lay-start" type="button" disabled>Start</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="s-count" hidden>
+        <img class="live" id="live" alt="">
+        <div class="top"><p id="count-of"></p></div>
+        <div class="bot"><p>Look at the camera</p></div>
+        <div class="ring">
+          <svg viewBox="0 0 360 360"><circle cx="180" cy="180" r="160" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="16"/><circle id="ring-arc" cx="180" cy="180" r="160" fill="none" stroke="var(--shed)" stroke-width="16" stroke-linecap="round" stroke-dasharray="1005.3" stroke-dashoffset="0"/></svg>
+          <b id="count-n"></b>
+        </div>
+        <div class="flash" id="flash"></div>
+        <div class="review" id="review" hidden><div id="review-pic"></div></div>
+      </section>
+
+      <section class="screen" id="s-work" hidden>
+        <div class="bg"></div>
+        <div class="layer"><div class="spin"></div><p>Making your photos</p></div>
+      </section>
+
+      <section class="screen" id="s-look" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <h2 class="h">Choose your look</h2>
+          <div class="paper"><img id="look-print" alt="Your print in the chosen look"></div>
+          <div class="hint">Touch a look to see it on your print</div>
+          <div class="grid" id="look-grid"></div>
+          <button class="gold-btn print" id="look-print-btn" type="button">Print</button>
+        </div>
+      </section>
+
+      <section class="screen" id="s-share" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <h2 class="h">Get your photos</h2>
+          <div class="thumb"><img id="share-print" alt="Your print"></div>
+          <div class="qr" id="share-qr" role="button" aria-label="See what the guest gets on their phone"></div>
+          <div class="scan">Scan with your phone camera</div>
+          <svg class="arrow" viewBox="0 0 420 420" aria-hidden="true"><path d="M330 40 C 420 160, 300 330, 40 300" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round"/><path d="M80 262 L 34 300 L 86 334" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="qh">Get your digital pictures here</div>
+          <div class="onway">Your print is on its way</div>
+          <div class="pbar"><i id="share-bar"></i></div>
+          <div class="ready" id="share-ready"></div>
+          <button class="gold-btn extra" id="share-extra" type="button"><b>Extra prints</b><small id="share-each"></small></button>
+          <button class="grey-btn finish" id="share-finish" type="button">Finish</button>
+          <div class="privacy">Online for 30 days at most, deleted 24 hours after you save. Privacy: photos.shedphotobooth.com/privacy</div>
+        </div>
+      </section>
+
+      <section class="screen" id="s-extra" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <h2 class="h">How many extra prints?</h2>
+          <div class="qty">
+            <button class="grey-btn" id="ex-minus" type="button" aria-label="One fewer">&minus;</button>
+            <output id="ex-n">1</output>
+            <button class="grey-btn" id="ex-plus" type="button" aria-label="One more">+</button>
+          </div>
+          <div class="each" id="ex-each"></div>
+          <div class="total" id="ex-total"></div>
+          <div class="row">
+            <button class="gold-btn" id="ex-pay" type="button">Confirm and pay</button>
+            <button class="grey-btn" id="ex-no" type="button">No thanks</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="s-progress" hidden>
+        <div class="bg"></div>
+        <div class="layer">
+          <h2 class="h" style="top:250px">Printing your pictures</h2>
+          <p class="big" id="prog-n"></p>
+        </div>
+      </section>
+
+      <section class="screen" id="s-thanks" hidden>
+        <div class="bg bg-thanks"></div>
+        <div class="layer">
+          <div class="box">
+            <h2>Thanks for stopping by!</h2>
+            <p>Get your digital pictures now</p>
+            <div class="qr" id="thanks-qr" role="button" aria-label="See what the guest gets on their phone"></div>
+            <button class="gold-btn done" id="thanks-done" type="button">Done</button>
+            <div class="closes" id="thanks-closes"></div>
+          </div>
+          <div class="privacy">Online for 30 days at most, deleted 24 hours after you save. Privacy: photos.shedphotobooth.com/privacy</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <p class="turn">Turn your phone sideways for a bigger screen</p>
+  <p class="foot" id="foot"></p>
+</div>
+
+<div class="over" id="phone" hidden>
+  <div class="phone" role="dialog" aria-label="What the guest gets on their phone">
+    <header><span>Your photos</span><button id="phone-close" type="button">Close</button></header>
+    <img class="gif" id="phone-gif" alt="The guest's GIF">
+    <h3>Your print</h3>
+    <img class="pr" id="phone-print" alt="The guest's print">
+    <h3>Your photos</h3>
+    <div class="ph" id="phone-photos"></div>
+    <p class="note">In the real booth the code opens the guest's own page on photos.shedphotobooth.com with these, to save to their phone. This is the GIF and print from this demo session.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="in">
+    <h2>Change something on this screen</h2>
+    <div class="where" id="note-where"></div>
+    <label class="where" for="note-text">What should change? Claude reads these and makes the change.</label>
+    <textarea id="note-text" placeholder="For example: make the price bigger, or take this design out"></textarea>
+    <div class="acts">
+      <button class="save" id="note-save" type="button">Save note</button>
+      <button id="note-close" type="button">Close</button>
+      <span class="msg" id="note-msg" role="status"></span>
+    </div>
+    <ul id="note-list"></ul>
+  </div>
+</div>
+
+<script type="application/json" id="cfg">{"title": "Shed Photobooth at Edinburgh's Christmas, East Market", "subtitle": "Booth preview: pretend photos, no camera, no card taken", "shed": "east", "foot": "Shed Photobooth's own preview of the booth for Edinburgh's Christmas, East Market. The screens, designs and looks are the booth's own (ShedBooth 0.9.5, edinburgh-christmas-east pack version 2), with pretend photos in place of the camera and a pretend card: nothing is taken and nothing is printed. Tap the code on the last screens to see what a guest gets on their phone.", "sessionPence": 800, "extraPence": 350, "countFirst": 10, "countLater": 7, "review": 1.0, "gifMs": 500, "designs": [{"id": "ec-special-delivery", "name": "Special Delivery", "w": 1200, "h": 1800, "photos": 4}, {"id": "ec-merry-and-bright", "name": "Merry & Bright", "w": 1800, "h": 1200, "photos": 2}, {"id": "ec-courant", "name": "The Christmas Courant", "w": 1200, "h": 1800, "photos": 2}, {"id": "ec-santas-list", "name": "Santa's List", "w": 1800, "h": 1200, "photos": 2}, {"id": "ec-christmas-magic", "name": "A Little Christmas Magic", "w": 1200, "h": 1800, "photos": 4}, {"id": "ec-polaroids-red", "name": "Christmas Polaroids, Red", "w": 1800, "h": 1200, "photos": 3}, {"id": "ec-market-stall", "name": "Market Stall", "w": 1200, "h": 1800, "photos": 4}, {"id": "ec-nice-list", "name": "The Nice List", "w": 1800, "h": 1200, "photos": 1}, {"id": "ec-polaroids-green", "name": "Christmas Polaroids, Green", "w": 1800, "h": 1200, "photos": 3}, {"id": "ec-christmas-family", "name": "Our Christmas Family", "w": 1800, "h": 1200, "photos": 1}, {"id": "ec-courant-front-page", "name": "Courant Front Page", "w": 1800, "h": 1200, "photos": 1}, {"id": "ec-family-portraits", "name": "Family Portraits", "w": 1800, "h": 1200, "photos": 1}, {"id": "ec-strip-red", "name": "Photo Strip, Red", "w": 600, "h": 1800, "photos": 4}, {"id": "ec-strip-green", "name": "Photo Strip, Green", "w": 600, "h": 1800, "photos": 4}], "looks": [{"id": "original", "name": "Original"}, {"id": "analogue", "name": "Analogue"}, {"id": "bw", "name": "Black & White"}, {"id": "film", "name": "Film"}, {"id": "glam", "name": "Glam"}, {"id": "flash", "name": "Flash"}, {"id": "softglow", "name": "Soft Glow"}, {"id": "disposable", "name": "Disposable"}, {"id": "golden", "name": "Golden Hour"}, {"id": "breeze-golden-200", "name": "Golden 200"}, {"id": "breeze-vivid-100", "name": "Vivid 100"}, {"id": "breeze-slide-50", "name": "Slide 50"}, {"id": "breeze-booth-strip", "name": "Booth Strip"}, {"id": "breeze-grit-400-b-w", "name": "Grit 400 B&W"}, {"id": "breeze-booth-warm", "name": "Booth Warm"}, {"id": "breeze-sepia-toned", "name": "Sepia toned"}], "voices": ["present-card", "approved", "declined"]}</script>
+<script>
+(function () {
+  "use strict";
+  var C = JSON.parse(document.getElementById("cfg").textContent);
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $("stage"), wrap = $("wrap");
+  var money = function (p) { return "£" + (p / 100).toFixed(2); };
+
+  $("title").innerHTML = "";
+  var t1 = document.createTextNode(C.title); $("title").appendChild(t1);
+  var sm = document.createElement("small"); sm.textContent = C.subtitle; $("title").appendChild(sm);
+  $("foot").textContent = C.foot;
+  document.querySelectorAll(".bg").forEach(function (b) { b.style.backgroundImage = "url(a/background.jpg)"; });
+  document.querySelectorAll(".bg-thanks").forEach(function (b) { b.style.backgroundImage = "url(a/bg-thanks.jpg)"; });
+
+  function fit() { var s = wrap.clientWidth / 1920; stage.style.transform = "scale(" + s + ")"; }
+  window.addEventListener("resize", fit); fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(wrap);
+
+  // ---- state ----
+  var S = { screen: "start", design: null, look: "original", extra: 1, quick: false, sound: true, extraPaying: false, gen: 0 };
+  var timers = [];
+  function later(fn, ms) { var g = S.gen; timers.push(setTimeout(function () { if (g === S.gen) fn(); }, ms)); }
+  function every(fn, ms) { var g = S.gen; var id = setInterval(function () { if (g !== S.gen) { clearInterval(id); return; } fn(); }, ms); timers.push(id); }
+  function clearTimers() { timers.forEach(function (t) { clearTimeout(t); clearInterval(t); }); timers = []; }
+
+  var NAMES = { start: "Start (welcome video)", pay: "Pay to start", result: "Payment accepted", layout: "Choose your layout", count: "Countdown and photo", work: "Making your photos", look: "Choose your look", share: "Get your photos", extra: "How many extra prints?", progress: "Printing your pictures", thanks: "Thank you" };
+  function show(name) {
+    S.gen++; clearTimers();
+    document.querySelectorAll(".screen").forEach(function (s) { s.hidden = s.id !== "s-" + name; });
+    S.screen = name;
+    var v = $("video");
+    if (name === "start") { try { v.currentTime = 0; v.play().catch(function () {}); } catch (e) {} } else { v.pause(); }
+    noteWhere();
+    if (enter[name]) enter[name]();
+  }
+
+  // ---- sound: only Pete's own three payment voices are in this demo ----
+  var voices = {};
+  ["present-card", "approved", "declined"].forEach(function (k) { if (C.voices.indexOf(k) >= 0) voices[k] = new Audio("a/voice-" + k + ".wav"); });
+  function say(k) { if (!S.sound || !voices[k]) return; try { voices[k].currentTime = 0; voices[k].play().catch(function () {}); } catch (e) {} }
+
+  // ---- QR codes: a picture drawn by QRCoder (the booth's own QR library) for shedphotobooth.com. The real booth's
+  // code opens the guest's own gallery page; in the demo a tap shows what the guest gets on their phone ----
+  function qr(el) {
+    el.innerHTML = "";
+    var im = document.createElement("img"); im.src = "a/qr.png"; im.alt = "QR code"; el.appendChild(im);
+  }
+
+  var designById = {}; C.designs.forEach(function (d) { designById[d.id] = d; });
+  var printUrl = function (d, l) { return "a/prints/" + d + "/" + l + ".jpg"; };
+
+  var enter = {};
+  enter.pay = function () {
+    var extra = S.extraPaying;
+    $("pay-h").textContent = extra ? "Pay for your extra prints" : "Pay to start";
+    $("pay-amount").textContent = money(extra ? S.extra * C.extraPence : C.sessionPence);
+    $("pay-status").textContent = "Tap, insert or hold your card on the reader";
+    $("pay-status").hidden = false; $("pay-card").hidden = false; $("pay-amount").hidden = false;
+    $("pay-cancel").hidden = false; $("pay-demo").hidden = false; $("pay-declined").hidden = true;
+    say("present-card");
+  };
+  function approve() {
+    $("pay-status").textContent = "Checking your card. Please wait...";
+    $("pay-cancel").hidden = true; $("pay-demo").hidden = true;
+    later(function () { show("result"); }, 1300);
+  }
+  function decline() {
+    $("pay-status").textContent = "Checking your card. Please wait...";
+    $("pay-cancel").hidden = true; $("pay-demo").hidden = true;
+    later(function () {
+      $("pay-status").hidden = true; $("pay-card").hidden = true;
+      $("pay-declined").hidden = false; say("declined");
+    }, 1300);
+  }
+  enter.result = function () {
+    say("approved");
+    later(function () {
+      if (S.extraPaying) { show("progress"); } else { show("layout"); }
+    }, 1800);
+  };
+
+  // ---- layout ----
+  var built = false;
+  enter.layout = function () {
+    var row = $("lay-row");
+    if (!built) {
+      C.designs.forEach(function (d) {
+        var c = document.createElement("div"); c.className = "dcard"; c.dataset.id = d.id; c.tabIndex = 0;
+        var pic = document.createElement("div"); pic.className = "pic";
+        var im = document.createElement("img"); im.src = "a/chooser/" + d.id + ".jpg"; im.alt = d.name;
+        // each picture at its own shape: at most 560 high and 660 wide (the card takes the picture's width)
+        var sc = Math.min(560 / d.h, 660 / d.w);
+        im.style.width = Math.round(d.w * sc) + "px"; im.style.height = Math.round(d.h * sc) + "px";
+        pic.appendChild(im); c.appendChild(pic);
+        var nm = document.createElement("div"); nm.className = "nm"; nm.textContent = d.name; c.appendChild(nm);
+        var ph = document.createElement("div"); ph.className = "ph"; ph.textContent = d.photos === 1 ? "1 photo" : d.photos + " photos"; c.appendChild(ph);
+        c.style.width = Math.max(320, Math.round(d.w * sc) + 52) + "px";
+        c.addEventListener("click", function () { pick(d.id); });
+        c.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(d.id); } });
+        row.appendChild(c);
+      });
+      row.addEventListener("scroll", handle);
+      built = true;
+    }
+    S.design = null; $("lay-start").disabled = true;
+    row.querySelectorAll(".dcard").forEach(function (c) { c.classList.remove("on"); });
+    row.scrollLeft = 0; setTimeout(handle, 30);
+  };
+  function pick(id) {
+    S.design = id; $("lay-start").disabled = false;
+    $("lay-row").querySelectorAll(".dcard").forEach(function (c) { c.classList.toggle("on", c.dataset.id === id); });
+    noteWhere();
+  }
+  function handle() {
+    var r = $("lay-row"), h = $("lay-handle"), tw = h.parentNode.clientWidth;
+    var frac = r.scrollWidth > r.clientWidth ? r.clientWidth / r.scrollWidth : 1;
+    var w = Math.max(60, tw * frac), left = (r.scrollWidth > r.clientWidth) ? (tw - w) * r.scrollLeft / (r.scrollWidth - r.clientWidth) : 0;
+    h.style.width = w + "px"; h.style.left = left + "px";
+  }
+  // drag the chooser sideways with a finger or mouse, as on the booth
+  (function () {
+    var r = $("lay-row"), down = false, x0 = 0, s0 = 0, moved = false;
+    r.addEventListener("pointerdown", function (e) { down = true; moved = false; x0 = e.clientX; s0 = r.scrollLeft; });
+    window.addEventListener("pointermove", function (e) { if (!down) return; var dx = (e.clientX - x0) / (wrap.clientWidth / 1920); if (Math.abs(dx) > 8) moved = true; r.scrollLeft = s0 - dx; });
+    window.addEventListener("pointerup", function () { down = false; });
+    r.addEventListener("click", function (e) { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+  })();
+
+  // ---- the photos ----
+  enter.count = function () {
+    var d = designById[S.design], n = d.photos, i = 0;
+    $("review").hidden = true;
+    function one() {
+      i++;
+      var secs = S.quick ? 3 : (i === 1 ? C.countFirst : C.countLater);
+      $("count-of").textContent = "Photo " + i + " of " + n;
+      $("live").src = "a/photos/photo-" + (((i - 1) % 4) + 1) + ".jpg";
+      $("review").hidden = true;
+      var left = secs;
+      var arc = $("ring-arc"), len = 1005.3;
+      $("count-n").textContent = left; arc.style.transition = "none"; arc.style.strokeDashoffset = "0";
+      every(function () {
+        left--;
+        if (left > 0) { $("count-n").textContent = left; arc.style.transition = "stroke-dashoffset 1s linear"; arc.style.strokeDashoffset = String(len * (1 - left / secs)); }
+      }, 1000);
+      later(function () {
+        S.gen++; clearTimers();
+        var f = $("flash"); f.style.transition = "none"; f.style.opacity = "1";
+        setTimeout(function () { f.style.transition = "opacity .35s"; f.style.opacity = "0"; }, 60);
+        $("review-pic").style.backgroundImage = "url(a/photos/photo-" + (((i - 1) % 4) + 1) + ".jpg)";
+        $("review").hidden = false;
+        later(function () { if (i < n) one(); else show("work"); }, C.review * 1000 + 150);
+      }, secs * 1000);
+    }
+    one();
+  };
+  enter.work = function () { later(function () { show("look"); }, 1800); };
+
+  // ---- the look ----
+  var lookBuilt = false;
+  enter.look = function () {
+    var g = $("look-grid");
+    if (!lookBuilt) {
+      C.looks.forEach(function (l) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "lk"; b.dataset.id = l.id;
+        var im = document.createElement("img"); im.src = "a/looks/" + l.id + ".jpg"; im.alt = "";
+        var sp = document.createElement("span"); sp.textContent = l.name;
+        b.appendChild(im); b.appendChild(sp);
+        b.addEventListener("click", function () { setLook(l.id); });
+        g.appendChild(b);
+      });
+      lookBuilt = true;
+    }
+    // load this design's prints in every look, so a touch shows it at once
+    C.looks.forEach(function (l) { var im = new Image(); im.src = printUrl(S.design, l.id); });
+    setLook("original");
+  };
+  function setLook(id) {
+    S.look = id;
+    $("look-print").src = printUrl(S.design, id);
+    $("look-grid").querySelectorAll(".lk").forEach(function (b) { b.classList.toggle("on", b.dataset.id === id); });
+    noteWhere();
+  }
+
+  // ---- sharing ----
+  enter.share = function () {
+    $("share-print").src = printUrl(S.design, S.look);
+    $("share-each").textContent = money(C.extraPence) + " each";
+    qr($("share-qr"));
+    var total = 14, left = total; $("share-bar").style.width = "0";
+    $("share-ready").textContent = "Your print will be ready in 0:" + String(left).padStart(2, "0");
+    every(function () {
+      left--;
+      $("share-bar").style.width = Math.min(100, (total - left) / total * 100) + "%";
+      $("share-ready").textContent = left > 0 ? "Your print will be ready in 0:" + String(left).padStart(2, "0") : "Nearly there…";
+    }, 1000);
+  };
+
+  // ---- extra prints ----
+  function extraShow() {
+    $("ex-n").textContent = S.extra;
+    $("ex-each").textContent = money(C.extraPence) + " each";
+    $("ex-total").textContent = "Total " + money(S.extra * C.extraPence);
+    $("ex-minus").disabled = S.extra <= 1; $("ex-plus").disabled = S.extra >= 5;
+  }
+  enter.extra = function () { S.extra = 1; extraShow(); };
+  enter.progress = function () {
+    var n = S.extra, done = 0;
+    $("prog-n").textContent = "0 of " + n + " done";
+    every(function () { done++; $("prog-n").textContent = Math.min(done, n) + " of " + n + " done"; if (done >= n) { later(function () { show("thanks"); }, 1200); } }, 1600);
+  };
+
+  // ---- thanks ----
+  enter.thanks = function () {
+    S.extraPaying = false;
+    qr($("thanks-qr"));
+    var left = 119, el = $("thanks-closes");
+    function put() { el.textContent = "Closes in " + Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0"); el.classList.toggle("red", left <= 10); }
+    put();
+    every(function () { left--; if (left <= 0) { show("start"); return; } put(); }, 1000);
+  };
+
+  // ---- the guest's phone ----
+  var gifTimer = null;
+  function phone() {
+    var d = S.design || C.designs[0].id, l = S.look || "original", f = 1;
+    $("phone-print").src = printUrl(d, l);
+    var ph = $("phone-photos"); ph.innerHTML = "";
+    var n = (designById[d] || { photos: 4 }).photos;
+    for (var i = 1; i <= Math.max(1, n); i++) { var im = document.createElement("img"); im.src = "a/gif/" + l + "/" + (((i - 1) % 4) + 1) + ".jpg"; im.alt = "Photo " + i; im.style.objectFit = "cover"; im.style.aspectRatio = "3 / 2"; im.style.objectPosition = "center 40%"; ph.appendChild(im); }
+    var gif = $("phone-gif"), frames = Math.max(1, Math.min(4, n));
+    gif.src = "a/gif/" + l + "/1.jpg";
+    clearInterval(gifTimer);
+    gifTimer = setInterval(function () { f = f % frames + 1; gif.src = "a/gif/" + l + "/" + f + ".jpg"; }, C.gifMs);
+    $("phone").hidden = false;
+  }
+  $("phone-close").addEventListener("click", function () { $("phone").hidden = true; clearInterval(gifTimer); });
+  $("phone").addEventListener("click", function (e) { if (e.target === $("phone")) { $("phone").hidden = true; clearInterval(gifTimer); } });
+  $("share-qr").addEventListener("click", phone);
+  $("thanks-qr").addEventListener("click", phone);
+  $("b-phone").addEventListener("click", phone);
+
+  // ---- wiring ----
+  $("start-tap").addEventListener("click", function () { S.extraPaying = false; show("pay"); });
+  $("pay-ok").addEventListener("click", approve);
+  $("pay-no").addEventListener("click", decline);
+  $("pay-cancel").addEventListener("click", function () {
+    // as the booth: "Payment cancelled. Nothing was taken.", then back (to the start, or for extra prints to thank you)
+    $("pay-status").textContent = "Payment cancelled. Nothing was taken.";
+    $("pay-cancel").hidden = true; $("pay-demo").hidden = true; $("pay-card").hidden = true;
+    later(function () { if (S.extraPaying) { S.extraPaying = false; show("thanks"); } else { show("start"); } }, 2200);
+  });
+  $("dec-again").addEventListener("click", function () { enter.pay(); });
+  $("dec-no").addEventListener("click", function () { if (S.extraPaying) { S.extraPaying = false; show("thanks"); } else { show("start"); } });
+  $("lay-start").addEventListener("click", function () { if (S.design) show("count"); });
+  $("look-print-btn").addEventListener("click", function () { show("share"); });
+  $("share-extra").addEventListener("click", function () { show("extra"); });
+  $("share-finish").addEventListener("click", function () { show("thanks"); });
+  $("ex-minus").addEventListener("click", function () { if (S.extra > 1) { S.extra--; extraShow(); } });
+  $("ex-plus").addEventListener("click", function () { if (S.extra < 5) { S.extra++; extraShow(); } });
+  $("ex-pay").addEventListener("click", function () { S.extraPaying = true; show("pay"); });
+  $("ex-no").addEventListener("click", function () { show("thanks"); });
+  $("thanks-done").addEventListener("click", function () { show("start"); });
+  $("b-restart").addEventListener("click", function () { S.extraPaying = false; show("start"); });
+  $("b-sound").addEventListener("click", function () { S.sound = !S.sound; this.setAttribute("aria-pressed", String(S.sound)); this.textContent = S.sound ? "Sound on" : "Sound off"; });
+  $("b-quick").addEventListener("click", function () { S.quick = !S.quick; this.setAttribute("aria-pressed", String(S.quick)); });
+
+  // ---- Pete's notes (owner and editors only; kept in this page's own store, read by Claude) ----
+  var db = null, me = null, notes = [];
+  function where() {
+    var w = NAMES[S.screen] || S.screen;
+    if ((S.screen === "layout" || S.screen === "count" || S.screen === "look" || S.screen === "share") && S.design) w += ", design: " + designById[S.design].name;
+    if ((S.screen === "look" || S.screen === "share") && S.look) { var lk = C.looks.filter(function (l) { return l.id === S.look; })[0]; if (lk) w += ", look: " + lk.name; }
+    return w;
+  }
+  function noteWhere() { $("note-where").textContent = "Screen: " + where(); renderNotes(); }
+  function renderNotes() {
+    var ul = $("note-list"); ul.innerHTML = "";
+    notes.filter(function (n) { return n.screen === S.screen; }).forEach(function (n) {
+      var li = document.createElement("li"), sp = document.createElement("span"), small = document.createElement("small");
+      sp.textContent = n.text; small.textContent = n.where + " · " + new Date(n.at).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+      sp.appendChild(small);
+      var del = document.createElement("button"); del.type = "button"; del.textContent = "Remove";
+      del.addEventListener("click", function () { db.doc("changes/" + n.id).delete().catch(function () { $("note-msg").textContent = "Could not remove it. Try again."; }); });
+      li.appendChild(sp); li.appendChild(del); ul.appendChild(li);
+    });
+    var all = notes.length; $("b-note").textContent = "Change something on this screen" + (all ? " (" + all + " saved)" : "");
+  }
+  $("b-note").addEventListener("click", function () { $("sheet").hidden = false; $("note-text").focus(); });
+  $("note-close").addEventListener("click", function () { $("sheet").hidden = true; });
+  $("note-save").addEventListener("click", function () {
+    var text = $("note-text").value.trim(); if (!text || !db) return;
+    var btn = this; btn.disabled = true; $("note-msg").textContent = "Saving...";
+    db.collection("changes").add({ shed: C.shed, screen: S.screen, where: where(), design: S.design || "", look: S.look || "", text: text, at: Date.now(), by: me || "" })
+      .then(function () { $("note-text").value = ""; $("note-msg").textContent = "Saved. Claude will see it."; })
+      .catch(function (e) { $("note-msg").textContent = (e && e.code === "quota_exceeded") ? "The notes are full. Remove some first." : "Not saved. Check your connection and try again."; })
+      .then(function () { btn.disabled = false; });
+  });
+  if (window.claude && window.claude.use) {
+    Promise.all([window.claude.use("db"), window.claude.use("user")]).then(function (r) {
+      db = r[0]; var user = r[1];
+      if (!db || !user) return;
+      var ok = user.canEdit ? user.canEdit() : false;
+      Promise.resolve(ok).then(function (can) {
+        if (!can) return;
+        Promise.resolve(user.id ? user.id() : null).then(function (id) { me = id; });
+        $("b-note").hidden = false;
+        db.collection("changes").orderBy("at", "asc").onSnapshot(function (snap) {
+          notes = snap.docs.map(function (d) { var x = d.data(); return { id: d.id, screen: x.screen, where: x.where, text: x.text, at: x.at }; });
+          renderNotes();
+        }, function () {});
+      });
+    }).catch(function () {});
+  }
+
+  show("start");
+})();
+</script>
+
+</body>
+</html>
