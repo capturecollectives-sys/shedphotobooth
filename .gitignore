@@ -11,3 +11,6 @@ preview-*.png
 
 # design-skill working files (never deploy)
 .taste-skill/
+
+# redesign working files (never deploy)
+_pitch/

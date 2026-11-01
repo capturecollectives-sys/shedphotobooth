@@ -1,17 +1,14 @@
 {
   "name": "Shed Photobooth",
   "short_name": "Shed",
-  "description": "Custom photobooth hire for festivals, weddings, markets, sports events and brand activations across Scotland and the UK.",
+  "description": "Photobooths built inside real wooden sheds, for festivals, Christmas markets, sports events, weddings and brands across Scotland and the UK.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1A1B26",
-  "theme_color": "#1A1B26",
+  "background_color": "#320466",
+  "theme_color": "#320466",
   "icons": [
-    {
-      "src": "/images/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    { "src": "/images/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/images/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/images/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
