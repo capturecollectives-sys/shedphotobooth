@@ -93,6 +93,29 @@
     });
   }
 
+  // ---- home: the printer. Scroll to print each design; they stack up ----
+  var printer = $('.printer');
+  if (printer) {
+    var prints = $$('.printer__print', printer), evs = $$('.printer__events li', printer), now = $('.printer__now', printer);
+    var last = -2;
+    var step = function () {
+      var r = printer.getBoundingClientRect(), span = printer.offsetHeight - innerHeight;
+      var p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1;
+      var k = Math.min(prints.length - 1, Math.floor(p * prints.length * 0.999));
+      if (r.top > innerHeight * 0.6) k = -1;
+      if (k === last) return; last = k;
+      prints.forEach(function (f, i) { f.classList.toggle('in', i <= Math.max(k, 0) && r.top < innerHeight); });
+      var ev = prints[Math.max(k, 0)].dataset.ev;
+      evs.forEach(function (li) { li.classList.toggle('on', li.dataset.ev === ev); });
+      var cur = evs.filter(function (li) { return li.dataset.ev === ev; })[0];
+      if (now && cur) now.textContent = cur.textContent;
+    };
+    var ticking = false;
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; step(); }); } }, { passive: true });
+    window.addEventListener('resize', step);
+    step();
+  }
+
   // ---- home: how a session goes, drag row with progress ----
   var row = $('#moments'), bar = $('#moments-progress');
   if (row) {
