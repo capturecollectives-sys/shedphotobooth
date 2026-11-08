@@ -14,3 +14,4 @@ preview-*.png
 
 # redesign working files (never deploy)
 _pitch/
+.taste-skill/
